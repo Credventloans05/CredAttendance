@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CREDVENT – HR & Payroll</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f4f0;--bg2:#ffffff;--bg3:#f0ede8;--bg4:#e8e4dc;
+  --border:#e0dbd2;--border2:#ccc6bb;
+  --text:#1a1814;--text2:#5a5548;--text3:#9a9080;
+  --orange:#e8660a;--orange2:#d45a08;--orange3:#bf5007;
+  --orange-bg:#fff4ec;--orange-border:#fbd5b5;
+  --green:#16a34a;--green-bg:#f0fdf4;--green-border:#bbf7d0;
+  --red:#dc2626;--red-bg:#fef2f2;--red-border:#fecaca;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-border:#fde68a;
+  --blue:#2563eb;--blue-bg:#eff6ff;--blue-border:#bfdbfe;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;--purple-border:#ddd6fe;
+  --teal:#0d9488;--teal-bg:#f0fdfa;--teal-border:#99f6e4;
+  --pink:#db2777;--pink-bg:#fdf2f8;--pink-border:#fbcfe8;
+  --font:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:8px;--r2:12px;--r3:16px;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --sh2:0 4px 16px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.06);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:14px}
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:230px;min-width:230px;background:var(--bg2);border-right:1.5px solid var(--border);display:flex;flex-direction:column;box-shadow:2px 0 8px rgba(0,0,0,.04)}
+.logo-area{padding:17px 20px 15px;display:flex;align-items:center;gap:11px;border-bottom:1.5px solid var(--border)}
+.logo-box{width:38px;height:38px;background:linear-gradient(135deg,#e8660a,#bf5007);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;box-shadow:0 2px 8px rgba(232,102,10,.35);flex-shrink:0}
+.logo-name{font-size:17px;font-weight:900;color:var(--orange);letter-spacing:-.5px}
+.logo-sub{font-size:9.5px;color:var(--text3);font-weight:500;margin-top:1px}
+.nav-body{flex:1;overflow-y:auto;padding:12px 10px}
+.nav-lbl{font-size:9px;font-weight:700;color:var(--text3);letter-spacing:1.3px;padding:0 8px;margin:12px 0 5px;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);transition:all .12s;margin-bottom:1px}
+.ni:hover{background:var(--bg3);color:var(--text)}
+.ni.on{background:var(--orange-bg);color:var(--orange);font-weight:600}
+.ni i{width:15px;text-align:center;font-size:13px;color:var(--text3)}
+.ni.on i{color:var(--orange)}
+.sf{padding:13px 17px;border-top:1.5px solid var(--border);display:flex;align-items:center;gap:9px}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.uname{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.urole{font-size:10px;color:var(--text3)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:var(--bg2);border-bottom:1.5px solid var(--border);padding:0 26px;height:58px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.tb-title{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.tb-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.content{flex:1;overflow-y:auto;padding:22px 26px;scroll-behavior:smooth}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* CARDS */
+.card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px 20px;box-shadow:var(--sh)}
+.card-flat{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.mc{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:15px 17px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.mc .bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r2) var(--r2) 0 0}
+.mc-lbl{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px}
+.mc-val{font-size:26px;font-weight:800;letter-spacing:-1.5px;line-height:1;font-family:var(--mono)}
+.mc-sub{font-size:11px;color:var(--text3);margin-top:5px}
+.mc-ico{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:26px;opacity:.07}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.b-or{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.b-gr{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.b-re{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.b-am{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-bl{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.b-pu{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.b-te{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border)}
+.b-pi{background:var(--pink-bg);color:var(--pink);border:1px solid var(--pink-border)}
+.b-gy{background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:var(--r);font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .12s;font-family:var(--font)}
+.btn-p{background:var(--orange);color:#fff;box-shadow:0 1px 4px rgba(232,102,10,.3)}
+.btn-p:hover{background:var(--orange2);transform:translateY(-1px)}
+.btn-g{background:transparent;color:var(--text2);border:1.5px solid var(--border)}
+.btn-g:hover{background:var(--bg3);border-color:var(--border2)}
+.btn-d{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red-border)}
+.btn-d:hover{background:#fecaca}
+.btn-sm{padding:5px 10px;font-size:11.5px}
+.btn-xs{padding:3px 8px;font-size:11px}
+
+/* FORMS */
+.fg{margin-bottom:13px}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px}
+input,select,textarea{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:9px 11px;color:var(--text);font-size:13px;font-family:var(--font);outline:none;transition:border-color .12s,box-shadow .12s}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,102,10,.1)}
+select option{background:#fff;color:var(--text)}
+input[type=checkbox]{width:16px;height:16px;accent-color:var(--orange);cursor:pointer}
+.req{color:var(--red);margin-left:2px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* TABLE */
+.tw{border-radius:var(--r2);overflow:hidden;border:1.5px solid var(--border)}
+table{width:100%;border-collapse:collapse}
+th{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;padding:10px 13px;background:var(--bg3);border-bottom:1.5px solid var(--border);white-space:nowrap;text-align:left}
+td{padding:11px 13px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg3)}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--bg3);border-radius:var(--r);padding:3px;border:1.5px solid var(--border)}
+.tab{padding:6px 14px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--text2);transition:all .12s;white-space:nowrap}
+.tab.on{background:var(--bg2);color:var(--orange);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* CALENDAR */
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.ch{font-size:9.5px;font-weight:700;color:var(--text3);text-align:center;padding:4px 2px;text-transform:uppercase}
+.cd{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;cursor:pointer;transition:all .12s;border:1.5px solid transparent;position:relative}
+.cd:hover{filter:brightness(.95);transform:scale(1.05)}
+.cd.today-ring{border-color:var(--orange)!important;font-weight:800}
+.cd.empty{opacity:0;pointer-events:none}
+
+/* STATUS CELL (attendance grid) */
+.sc{width:22px;height:22px;border-radius:4px;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;transition:all .12s;border:1.5px solid}
+.sc:hover{transform:scale(1.25);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+
+/* STATUS PICKER */
+.spk{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.sp{padding:10px 6px;border:2px solid var(--border);border-radius:var(--r);cursor:pointer;text-align:center;transition:all .12s}
+.sp:hover{border-color:var(--border2);background:var(--bg3)}
+.sp.sel{border-color:var(--orange);background:var(--orange-bg)}
+.sp-code{font-size:13px;font-weight:800;margin-bottom:3px;font-family:var(--mono)}
+.sp-name{font-size:9px;font-weight:600;color:var(--text3);line-height:1.2}
+
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(26,24,20,.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(2px)}
+.modal{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r3);width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2)}
+.modal-sm{max-width:420px}
+.modal-md{max-width:540px}
+.modal-lg{max-width:700px}
+.modal-xl{max-width:860px}
+.mh{padding:17px 22px 15px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1;border-radius:var(--r3) var(--r3) 0 0}
+.modal-ttl{font-size:15px;font-weight:700}
+.mx{cursor:pointer;color:var(--text3);font-size:17px;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.mx:hover{background:var(--bg3);color:var(--text)}
+.mb{padding:20px 22px}
+.mf{padding:13px 22px;border-top:1.5px solid var(--border);display:flex;gap:8px;justify-content:flex-end;background:var(--bg3);border-radius:0 0 var(--r3) var(--r3)}
+
+/* PAYSLIP */
+.ps{background:#fff;border-radius:var(--r2);overflow:hidden;font-family:var(--font);border:1.5px solid #e5e7eb}
+.psh{background:linear-gradient(135deg,#e8660a,#9a3d07);color:#fff;padding:22px 26px}
+.ps-co{font-size:22px;font-weight:900;letter-spacing:-.5px}
+.ps-tg{font-size:11px;opacity:.75;margin-top:2px}
+.ps-mr{display:flex;gap:22px;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.2);flex-wrap:wrap}
+.ps-mi .lbl{font-size:9.5px;opacity:.6;margin-bottom:2px}
+.ps-mi .val{font-size:13px;font-weight:700}
+.psb{padding:22px 26px;color:#1a1814}
+.ps-emp{display:flex;justify-content:space-between;padding-bottom:14px;border-bottom:1.5px solid #e5e5e5;margin-bottom:15px;flex-wrap:wrap;gap:12px}
+.ps-en{font-size:20px;font-weight:900;color:#e8660a;margin-bottom:3px}
+.ps-ei{font-size:12px;color:#666;line-height:1.8}
+.ps-ar{display:flex;gap:0;margin-bottom:15px;border:1.5px solid #e5e5e5;border-radius:8px;overflow:hidden}
+.ps-ai{flex:1;padding:9px 5px;text-align:center;border-right:1px solid #e5e5e5}
+.ps-ai:last-child{border-right:none}
+.ps-av{font-size:18px;font-weight:800;font-family:'DM Mono',monospace}
+.ps-al{font-size:9px;color:#888;margin-top:2px}
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.ps-tbl{width:100%;border-collapse:collapse;border:1.5px solid #e5e5e5;border-radius:8px;overflow:hidden}
+.ps-tbl th{background:#f8f8f8;padding:8px 11px;font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #e5e5e5;text-align:left}
+.ps-tbl td{padding:8px 11px;font-size:12.5px;border-bottom:1px solid #f0f0f0;color:#333}
+.ps-tbl tr:last-child td{border-bottom:none;font-weight:700;background:#fafafa}
+.ps-net{background:linear-gradient(135deg,#fff4ec,#ffe0c3);border:2px solid #fbd5b5;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.ps-nl{font-size:15px;font-weight:700;color:#e8660a}
+.ps-nv{font-size:26px;font-weight:900;color:#e8660a;font-family:'DM Mono',monospace}
+.ps-dn{margin-top:10px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:7px;font-size:11px;color:#92400e;line-height:1.6}
+.ps-ft{padding:12px 26px;background:#f8f8f8;border-top:1.5px solid #e5e5e5;display:flex;justify-content:space-between;font-size:11px;color:#999;flex-wrap:wrap;gap:6px}
+
+/* LOGIN */
+.lp{min-height:100vh;background:linear-gradient(135deg,#fff4ec 0%,#f5f4f0 50%,#fde8d4 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.lc{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:36px;width:420px;max-width:100%;box-shadow:0 8px 32px rgba(232,102,10,.12)}
+.ll-row{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.ll-box{width:46px;height:46px;background:linear-gradient(135deg,#e8660a,#bf5007);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:#fff;box-shadow:0 3px 10px rgba(232,102,10,.4);flex-shrink:0}
+.ll-name{font-size:24px;font-weight:900;color:var(--orange);letter-spacing:-.5px}
+.ll-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.rc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.ro{padding:14px;border:2px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:all .15s;text-align:center}
+.ro:hover{border-color:var(--border2);background:var(--bg3)}
+.ro.sel{border-color:var(--orange);background:var(--orange-bg)}
+.ro i{font-size:22px;margin-bottom:8px;display:block}
+.ro .rn{font-size:13px;font-weight:700}
+.ro .rd{font-size:10.5px;color:var(--text3);margin-top:2px}
+.err{background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--r);padding:10px 13px;font-size:12.5px;color:var(--red);margin-bottom:14px;display:flex;gap:8px;align-items:center}
+
+/* NOTIFY */
+.notif{position:fixed;top:18px;right:18px;background:#fff;border:1.5px solid var(--orange-border);border-left:4px solid var(--orange);border-radius:var(--r);padding:12px 16px;font-size:13px;font-weight:500;z-index:9999;display:flex;align-items:center;gap:10px;box-shadow:var(--sh2);max-width:320px;animation:slin .3s ease}
+@keyframes slin{from{transform:translateX(130%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* UTILS */
+.row{display:flex;align-items:center;gap:10px}
+.jb{display:flex;align-items:center;justify-content:space-between}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.sx{overflow-x:auto}
+.sx::-webkit-scrollbar{height:4px}
+.sx::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.st{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.st i{color:var(--orange)}
+.div{height:1.5px;background:var(--border);margin:14px 0}
+.muted{color:var(--text3)}
+.modal-ttl{font-size:15px;font-weight:700}
+.mon{font-family:var(--mono)}
+.empty{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty i{font-size:36px;margin-bottom:12px;opacity:.25;display:block}
+.empty p{font-size:13px}
+.info{display:flex;align-items:flex-start;gap:8px;padding:10px 13px;background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:var(--r);font-size:12px;color:var(--orange);margin-bottom:12px}
+.info i{margin-top:1px;flex-shrink:0}
+.sec-hdr{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.9px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+<script>
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║  CREDVENT – Attendance & Payroll System                             ║
+// ╚══════════════════════════════════════════════════════════════════════╝
+
+// ── CONSTANTS ─────────────────────────────────────────────────────────────
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
+const TEAM_COLORS=['#e8660a','#7c3aed','#0d9488','#2563eb','#db2777','#16a34a','#d97706','#64748b','#c2410c','#4338ca'];
+const TEAM_ICONS=['💼','🔧','🎨','📈','📢','💰','⚙️','🏢','🚀','🔬'];
+
+const STATUS = {
+  P:   {code:'P',   label:'Present',        short:'P',  clr:'#15803d',bg:'#dcfce7',bdr:'#86efac'},
+  LL:  {code:'LL',  label:'Late Login',      short:'LL', clr:'#a16207',bg:'#fef9c3',bdr:'#fde047'},
+  HD:  {code:'HD',  label:'Half Day',        short:'HD', clr:'#1d4ed8',bg:'#dbeafe',bdr:'#93c5fd'},
+  LLHD:{code:'LLHD',label:'Late + Half Day', short:'LH', clr:'#92400e',bg:'#fef3c7',bdr:'#fcd34d'},
+  A:   {code:'A',   label:'Absent',          short:'A',  clr:'#b91c1c',bg:'#fee2e2',bdr:'#fca5a5'},
+  PH:  {code:'PH',  label:'Public Holiday',  short:'PH', clr:'#6d28d9',bg:'#f5f3ff',bdr:'#c4b5fd'},
+  J:   {code:'J',   label:'Jelly Leave',     short:'J',  clr:'#be185d',bg:'#fdf2f8',bdr:'#f9a8d4'},
+  SH:  {code:'SH',  label:'Sunday Holiday',  short:'SH', clr:'#64748b',bg:'#f1f5f9',bdr:'#cbd5e1'},
+  SW:  {code:'SW',  label:'Sunday Work',     short:'SW', clr:'#065f46',bg:'#ecfdf5',bdr:'#6ee7b7'},
+};
+const ALL_STATUSES = ['P','LL','HD','LLHD','A','PH','J','SH','SW'];
+
+// ── DATABASE ──────────────────────────────────────────────────────────────
+const DB = {
+  teams: [],            // {id, name, manager, color, icon}
+  employees: [],        // {id, name, empCode, designation, joinDate, teamId, grossSalary, pfOpted, loginId}
+  attendance: {},       // {empId: {dateKey: statusCode}}
+  credentials: {},      // {loginId: {empId, password}}
+  publicHolidays: {},   // {dateKey: {name}}
+  admin: {id:'admin', password:'admin123'},
+};
+
+let _eid = 1;
+let _tid = 1;
+const USE_SUPABASE = Boolean(
+  window.SUPABASE_URL && window.SUPABASE_ANON_KEY &&
+  !window.SUPABASE_URL.includes('<') && !window.SUPABASE_ANON_KEY.includes('<')
+);
+let supabaseClient = null;
+let SUPABASE_READY = false;
+
+async function initSupabase(){
+  if(!USE_SUPABASE) return;
+  if(!window.supabase){
+    console.warn('Supabase client library not loaded');
+    notify('Supabase client not available');
+    return;
+  }
+  supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+  try{
+    await loadSupabaseData();
+    SUPABASE_READY = true;
+    notify('Supabase connected');
+  }catch(err){
+    console.error('Supabase load failed', err);
+    notify('Supabase connection failed');
+  }
+}
+
+async function loadSupabaseData(){
+  if(!supabaseClient) return;
+
+  const [teamsRes, employeesRes, attendanceRes, holidaysRes, adminCredRes] = await Promise.all([
+    supabaseClient.from('teams').select('*'),
+    supabaseClient.from('employees').select('*'),
+    supabaseClient.from('attendance').select('*'),
+    supabaseClient.from('public_holidays').select('*'),
+    supabaseClient.from('admin_credentials').select('*').limit(1),
+  ]);
+
+  const errors = [teamsRes, employeesRes, attendanceRes, holidaysRes, adminCredRes].filter(r=>r.error);
+  if(errors.length){
+    throw new Error(errors.map(r=>r.error?.message||'Unknown').join(' | '));
+  }
+
+  DB.teams = teamsRes.data || [];
+  DB.employees = (employeesRes.data || []).map(e=>({
+    id: e.id,
+    name: e.name,
+    empCode: e.emp_code||e.empCode,
+    designation: e.designation,
+    joinDate: e.join_date||e.joinDate,
+    teamId: e.team_id||e.teamId,
+    grossSalary: parseFloat(e.gross_salary||e.grossSalary||0)||0,
+    pfOpted: !!(e.pf_opted||e.pfOpted),
+    pfEmployeeDeduction: parseFloat(e.pf_employee_deduction||e.pfEmployeeDeduction||900) || 900,
+    pfEmployerContribution: parseFloat(e.pf_employer_contribution||e.pfEmployerContribution||900) || 900,
+    professionalTax: parseFloat(e.professional_tax||e.professionalTax||200) || 200,
+    loginId: e.login_id||e.loginId,
+    password: e.password||'',
+  }));
+  DB.attendance = {};
+  (attendanceRes.data || []).forEach(row=>{
+    if(!row.employee_id||!row.date_key) return;
+    if(!DB.attendance[row.employee_id]) DB.attendance[row.employee_id] = {};
+    DB.attendance[row.employee_id][row.date_key] = row.comment ? {status: row.status, comment: row.comment} : row.status;
+  });
+  DB.publicHolidays = {};
+  (holidaysRes.data || []).forEach(row=>{
+    if(row.date_key) DB.publicHolidays[row.date_key] = {name: row.name};
+  });
+  const adminCred = (adminCredRes.data || [])[0] || null;
+  if(adminCred){
+    DB.admin.id = adminCred.username || DB.admin.id;
+    DB.admin.password = adminCred.password || DB.admin.password;
+  }
+  DB.credentials = {};
+  DB.employees.forEach(emp=>{
+    if(emp.loginId) DB.credentials[emp.loginId] = {empId: emp.id, password: emp.password || ''};
+  });
+
+  const maxE = DB.employees.reduce((max,e)=>Math.max(max, parseInt((e.id||'').replace(/\D/g,''))||0), 0);
+  const maxT = DB.teams.reduce((max,t)=>Math.max(max, parseInt((t.id||'').replace(/\D/g,''))||0), 0);
+  _eid = maxE + 1;
+  _tid = maxT + 1;
+}
+
+async function syncTeamToSupabase(team){
+  if(!supabaseClient) return;
+  const {error} = await supabaseClient.from('teams').upsert([{id:team.id,name:team.name,manager:team.manager,color:team.color,icon:team.icon}], {onConflict:'id'});
+  if(error){
+    console.error('Supabase team sync failed', error);
+    notify('Supabase sync error');
+  }
+}
+
+async function deleteTeamFromSupabase(id){
+  if(!supabaseClient) return;
+  const {error} = await supabaseClient.from('teams').delete().eq('id',id);
+  if(error){
+    console.error('Supabase delete team failed', error);
+    notify('Supabase delete error');
+  }
+}
+
+async function syncEmployeeToSupabase(emp, password){
+  if(!supabaseClient) return;
+  const payload = {
+    id: emp.id,
+    name: emp.name,
+    emp_code: emp.empCode,
+    designation: emp.designation,
+    join_date: emp.joinDate,
+    team_id: emp.teamId,
+    gross_salary: emp.grossSalary,
+    pf_opted: emp.pfOpted,
+    pf_employee_deduction: emp.pfEmployeeDeduction || 900,
+    pf_employer_contribution: emp.pfEmployerContribution || 900,
+    professional_tax: emp.professionalTax || 200,
+    login_id: emp.loginId,
+  };
+  if(password) payload.password = password;
+  const {error} = await supabaseClient.from('employees').upsert([payload], {onConflict:'id'});
+  if(error){
+    console.error('Supabase employee sync failed', error);
+    notify('Supabase sync error');
+  }
+}
+
+async function deleteEmployeeFromSupabase(id){
+  if(!supabaseClient) return;
+  const [{error: empErr}, {error: attErr}] = await Promise.all([
+    supabaseClient.from('employees').delete().eq('id', id),
+    supabaseClient.from('attendance').delete().eq('employee_id', id),
+  ]);
+  if(empErr || attErr){
+    console.error('Supabase delete employee failed', empErr||attErr);
+    notify('Supabase delete error');
+  }
+}
+
+async function syncAttendanceToSupabase(empId, dateStr, status, comment=''){
+  if(!supabaseClient) return;
+  const basePayload = {employee_id: empId, date_key: dateStr, status};
+  const payload = comment ? {...basePayload, comment} : basePayload;
+  const {error} = await supabaseClient.from('attendance').upsert([payload], {onConflict:['employee_id','date_key']});
+  if(error && comment && /column .*comment/i.test(error.message||'')){
+    const {error: retryErr} = await supabaseClient.from('attendance').upsert([basePayload], {onConflict:['employee_id','date_key']});
+    if(retryErr){
+      console.error('Supabase attendance sync failed', retryErr);
+      notify('Supabase sync error');
+    }
+    return;
+  }
+  if(error){
+    console.error('Supabase attendance sync failed', error);
+    notify('Supabase sync error');
+  }
+}
+
+async function syncHolidayToSupabase(key, name){
+  if(!supabaseClient) return;
+  const {error} = await supabaseClient.from('public_holidays').upsert([{date_key: key, name}], {onConflict:'date_key'});
+  if(error){
+    console.error('Supabase holiday sync failed', error);
+    notify('Supabase sync error');
+  }
+}
+
+async function deleteHolidayFromSupabase(key){
+  if(!supabaseClient) return;
+  const {error} = await supabaseClient.from('public_holidays').delete().eq('date_key', key);
+  if(error){
+    console.error('Supabase delete holiday failed', error);
+    notify('Supabase delete error');
+  }
+}
+
+async function resetEmployeePasswordToSupabase(empId, password){
+  if(!supabaseClient) return;
+  const {error} = await supabaseClient.from('employees').update({password}).eq('id', empId);
+  if(error){
+    console.error('Supabase password reset failed', error);
+    notify('Supabase sync error');
+  }
+}
+
+async function syncAdminCredentialsToSupabase(username, password){
+  if(!supabaseClient) return;
+  const {error} = await supabaseClient.from('admin_credentials').upsert([
+    {id: 'admin', username, password}
+  ], {onConflict: 'id'});
+  if(error){
+    console.error('Supabase admin credential sync failed', error);
+    notify('Supabase sync error');
+  }
+}
+
+async function clearSupabaseData(){
+  if(!supabaseClient) return;
+  const tables = ['attendance', 'public_holidays', 'employees', 'teams'];
+  for(const table of tables){
+    const {error} = await supabaseClient.from(table).delete();
+    if(error){
+      console.error('Supabase clear data failed', table, error);
+      notify('Supabase clear error');
+      return;
+    }
+  }
+}
+
+
+// ── TIME HELPERS ───────────────────────────────────────────────────────────
+const NOW = new Date();
+const CY = NOW.getFullYear(), CM = NOW.getMonth(), CD = NOW.getDate();
+
+function dim(y,m){return new Date(y,m+1,0).getDate()}
+function fd(y,m){return new Date(y,m,1).getDay()}
+function dk(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`}
+function isSun(y,m,d){return new Date(y,m,d).getDay()===0}
+function isToday(y,m,d){return y===CY&&m===CM&&d===CD}
+function canEditDate(y,m,d){
+  if(y< CY || (y===CY && m<CM)) return true;
+  if(y===CY && m===CM) return d<=CD;
+  return false;
+}
+function maxEditableDate(y,m){
+  if(y< CY || (y===CY && m<CM)) return dk(y,m,dim(y,m));
+  if(y===CY && m===CM) return todayKey();
+  return dk(y,m,1);
+}
+function daysPassedInMonth(y,m){
+  if(y===CY && m===CM) return Math.min(dim(y,m), CD);
+  return dim(y,m);
+}
+function todayKey(){return dk(CY,CM,CD)}
+function fmtDate(s){if(!s)return '—';const d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+
+// ── DATA HELPERS ───────────────────────────────────────────────────────────
+function getEmp(id){return DB.employees.find(e=>e.id===id)}
+function getTeam(id){return DB.teams.find(t=>t.id===id)}
+function teamEmps(tid){return tid&&tid!=='all'?DB.employees.filter(e=>e.teamId===tid):DB.employees}
+function ini(name){return (name||'?').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}
+function fmtC(n){return '₹'+Math.round(n||0).toLocaleString('en-IN')}
+function isPH(y,m,d){return !!DB.publicHolidays[dk(y,m,d)]}
+
+function normalizeAttendanceEntry(entry){
+  if(typeof entry === 'string') return {status: entry, comment: ''};
+  if(entry && typeof entry === 'object') return {status: entry.status || '', comment: entry.comment || ''};
+  return {status: '', comment: ''};
+}
+
+function statusFor(empId,y,m,d){
+  const manual = normalizeAttendanceEntry(DB.attendance[empId]?.[dk(y,m,d)]);
+  if(manual.status) return manual.status;
+  if(isPH(y,m,d)) return 'PH';
+  if(isSun(y,m,d)) return 'SH';
+  return null;
+}
+
+function attDetail(empId,y,m,d){
+  const key=dk(y,m,d);
+  const manual=normalizeAttendanceEntry(DB.attendance[empId]?.[key]);
+  const status=manual.status || (isPH(y,m,d)?'PH':isSun(y,m,d)?'SH':null);
+  const label=status?STATUS[status]?.label:'Click to mark';
+  const comment=manual.comment?.trim()||'';
+  return {status, label, comment, key, title: comment ? `${label} — ${comment}` : label};
+}
+
+function attSummary(empId,y,m){
+  const days=daysPassedInMonth(y,m);
+  const r={P:0,LL:0,HD:0,LLHD:0,A:0,PH:0,J:0,SH:0,SW:0};
+  for(let d=1;d<=days;d++){const s=statusFor(empId,y,m,d);if(s)r[s]=(r[s]||0)+1;}
+  return r;
+}
+
+function calcPay(empId,y,m){
+  const emp=getEmp(empId);
+  if(!emp)return null;
+  const gross=parseFloat(emp.grossSalary)||0;
+  const perDay=gross/30;
+  const s=attSummary(empId,y,m);
+  const daysPassed=daysPassedInMonth(y,m);
+  const halfDays = s.HD + s.LLHD;
+  const absentDays = s.A + s.J;
+  const earningDays = daysPassed;
+  const earned = perDay * earningDays;
+  const absentDed = absentDays * perDay;
+  const halfDayDed = halfDays * (perDay / 2);
+  const attendanceDed = absentDed + halfDayDed;
+  const totalLL = s.LL + s.LLHD;
+  let llDed=0;
+  if(totalLL>0){const t1=Math.min(totalLL,3),t2=Math.max(0,totalLL-3);llDed=t1*150+t2*200;}
+  const pfEmp = emp.pfOpted ? (parseFloat(emp.pfEmployeeDeduction) || 900) : 0;
+  const pfEr  = emp.pfOpted ? (parseFloat(emp.pfEmployerContribution) || 900) : 0;
+  const pfDed = pfEmp + pfEr;
+  const pt    = emp.pfOpted ? (parseFloat(emp.professionalTax) || 200) : 0;
+  const totalDed = attendanceDed + llDed + pfDed + pt;
+  const net = earned - totalDed;
+  return {gross,perDay,earningDays,earned,halfDays,absentDays,absentDed,halfDayDed,attendanceDed,daysPassed,totalLL,llDed,pfEmp,pfEr,pfDed,pt,totalDed,net,s};
+}
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let S={
+  loggedIn:false, role:null, empId:null,
+  page:'dashboard', modal:null, notif:null,
+  loginRole:'admin', loginId:'', loginPw:'', loginErr:'',
+  attTeam:'all', attY:CY, attM:CM,
+  payTeam:'all', payM:CM, payY:CY,
+  empTeam:'all',
+  myAttM:CM, myAttY:CY,
+  myPayM:CM, myPayY:CY,
+};
+
+function set(p){Object.assign(S,p);render()}
+function notify(msg){S.notif=msg;render();setTimeout(()=>{S.notif=null;render()},3000)}
+function closeModal(){set({modal:null})}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function render(){
+  document.getElementById('root').innerHTML = S.loggedIn ? appHTML() : loginHTML();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════════════════════════════════════
+function loginHTML(){
+  return `<div class="lp">
+  <div class="lc">
+    <div class="ll-row">
+      <div class="ll-box">C</div>
+      <div><div class="ll-name">CREDVENT</div><div class="ll-sub">HR & Payroll Management</div></div>
+    </div>
+    <div style="font-size:20px;font-weight:700;margin-bottom:5px">Welcome back</div>
+    <div style="font-size:13px;color:var(--text3);margin-bottom:22px">Sign in to your workspace</div>
+    <div class="rc">
+      <div class="ro ${S.loginRole==='admin'?'sel':''}" onclick="set({loginRole:'admin',loginErr:''})">
+        <i class="fa-solid fa-shield-halved" style="color:var(--orange)"></i>
+        <div class="rn">Admin</div><div class="rd">Full access</div>
+      </div>
+      <div class="ro ${S.loginRole==='employee'?'sel':''}" onclick="set({loginRole:'employee',loginErr:''})">
+        <i class="fa-solid fa-user-tie" style="color:var(--blue)"></i>
+        <div class="rn">Employee</div><div class="rd">My portal</div>
+      </div>
+    </div>
+    ${S.loginErr?`<div class="err"><i class="fa-solid fa-circle-exclamation"></i>${S.loginErr}</div>`:''}
+    <div class="fg">
+      <label class="fl">${S.loginRole==='admin'?'Admin Username':'Employee Login ID'}</label>
+      <input type="text" id="l-id" placeholder="${S.loginRole==='admin'?'admin':'e.g. EMP001'}" value="${S.loginId}" oninput="S.loginId=this.value" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="fg" style="margin-bottom:20px">
+      <label class="fl">Password</label>
+      <input type="password" id="l-pw" placeholder="Enter password" value="${S.loginPw}" oninput="S.loginPw=this.value" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-p" style="width:100%;justify-content:center;padding:11px;font-size:14px" onclick="doLogin()">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i>Sign In
+    </button>
+    ${S.loginRole==='admin'?`<div style="margin-top:14px;text-align:center;font-size:11.5px;color:var(--text3)">Default: <b>admin</b> / <b>admin123</b></div>`:''}
+    ${S.loginRole==='employee'&&DB.employees.length===0?`<div class="info" style="margin-top:14px"><i class="fa-solid fa-info-circle"></i>No employees added yet. Ask your admin to register your account.</div>`:''}
+  </div>
+</div>`;
+}
+
+window.doLogin=function(){
+  const id=S.loginId.trim(),pw=S.loginPw.trim();
+  if(!id||!pw){set({loginErr:'Please enter both ID and password'});return}
+  if(S.loginRole==='admin'){
+    if(id===DB.admin.id&&pw===DB.admin.password){set({loggedIn:true,role:'admin',page:'dashboard',loginErr:''});notify('Welcome, Admin!')}
+    else set({loginErr:'Invalid admin credentials'});
+  }else{
+    const c=DB.credentials[id];
+    if(c&&c.password===pw){
+      const emp=getEmp(c.empId);
+      set({loggedIn:true,role:'employee',empId:c.empId,page:'emp-dash',loginErr:''});
+      notify('Welcome, '+(emp?.name||'Employee')+'!');
+    }else set({loginErr:'Invalid login ID or password'});
+  }
+}
+window.doLogout=function(){set({loggedIn:false,role:null,empId:null,loginId:'',loginPw:'',loginErr:'',page:'dashboard'})}
+
+// ════════════════════════════════════════════════════════════════════════
+// APP SHELL
+// ════════════════════════════════════════════════════════════════════════
+function appHTML(){
+  const adm=S.role==='admin';
+  const emp=adm?null:getEmp(S.empId);
+  const eteam=emp?getTeam(emp.teamId):null;
+
+  const navA=[
+    {p:'dashboard',ic:'fa-gauge-high',lb:'Dashboard'},
+    {p:'teams',ic:'fa-sitemap',lb:'Teams'},
+    {p:'employees',ic:'fa-users',lb:'Employees'},
+    {p:'attendance',ic:'fa-calendar-check',lb:'Attendance'},
+    {p:'payroll',ic:'fa-money-bill-wave',lb:'Payroll'},
+    {p:'holidays',ic:'fa-umbrella-beach',lb:'Holidays'},
+    {p:'reports',ic:'fa-chart-bar',lb:'Reports'},
+    {p:'settings',ic:'fa-gear',lb:'Settings'},
+  ];
+  const navE=[
+    {p:'emp-dash',ic:'fa-gauge-high',lb:'My Dashboard'},
+    {p:'emp-att',ic:'fa-calendar-check',lb:'My Attendance'},
+    {p:'emp-pay',ic:'fa-file-invoice-dollar',lb:'My Payslip'},
+  ];
+  const nav=adm?navA:navE;
+
+  const titles={dashboard:'Dashboard',teams:'Teams',employees:'Employee Directory',attendance:'Attendance',payroll:'Payroll',holidays:'Holidays & Leaves',reports:'Reports',settings:'Settings','emp-dash':'My Dashboard','emp-att':'My Attendance','emp-pay':'My Payslip'};
+
+  return `<div class="app">
+  <nav class="sidebar">
+    <div class="logo-area">
+      <div class="logo-box">C</div>
+      <div><div class="logo-name">CREDVENT</div><div class="logo-sub">HR & Payroll</div></div>
+    </div>
+    <div class="nav-body">
+      <div class="nav-lbl">Navigation</div>
+      ${nav.map(n=>`<div class="ni ${S.page===n.p?'on':''}" onclick="set({page:'${n.p}'})">
+        <i class="fa-solid ${n.ic}"></i>${n.lb}</div>`).join('')}
+    </div>
+    <div class="sf">
+      <div class="av" style="width:32px;height:32px;font-size:11px;background:${adm?'var(--orange-bg)':eteam?eteam.color+'20':'#f0f0f0'};color:${adm?'var(--orange)':eteam?eteam.color:'#888'}">
+        ${adm?'AD':emp?ini(emp.name):'?'}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="uname">${adm?'Administrator':emp?.name||'Employee'}</div>
+        <div class="urole">${adm?'Full Access':emp?.designation||''}</div>
+      </div>
+      <span onclick="doLogout()" title="Logout" style="cursor:pointer;color:var(--text3);padding:5px;font-size:13px"><i class="fa-solid fa-right-from-bracket"></i></span>
+    </div>
+  </nav>
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="tb-title">${titles[S.page]||'Dashboard'}</div>
+        <div class="tb-sub">${MONTHS[CM]} ${CY} · ${adm?'Admin View':'Employee Portal'}</div>
+      </div>
+      <div class="row">
+        <span class="badge b-or"><i class="fa-solid fa-circle" style="font-size:6px"></i>LIVE</span>
+        ${adm?`<button class="btn btn-p btn-sm" onclick="openBulkModal()"><i class="fa-solid fa-plus"></i>Mark Attendance</button>`:''}
+      </div>
+    </div>
+    <div class="content">${pageHTML()}</div>
+  </div>
+</div>
+${modalHTML()}
+${S.notif?`<div class="notif"><i class="fa-solid fa-circle-check" style="color:var(--orange)"></i>${S.notif}</div>`:''}`;
+}
+
+function pageHTML(){
+  if(S.role==='employee'){
+    if(S.page==='emp-dash') return pgEmpDash();
+    if(S.page==='emp-att')  return pgEmpAtt();
+    if(S.page==='emp-pay')  return pgEmpPay();
+    return pgEmpDash();
+  }
+  if(S.page==='dashboard')  return pgDash();
+  if(S.page==='teams')      return pgTeams();
+  if(S.page==='employees')  return pgEmps();
+  if(S.page==='attendance') return pgAtt();
+  if(S.page==='payroll')    return pgPayroll();
+  if(S.page==='holidays')   return pgHolidays();
+  if(S.page==='reports')    return pgReports();
+  if(S.page==='settings')   return pgSettings();
+  return pgDash();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// ADMIN DASHBOARD
+// ════════════════════════════════════════════════════════════════════════
+function pgDash(){
+  if(!DB.employees.length) return `
+  <div style="text-align:center;padding:70px 20px">
+    <div style="font-size:52px;margin-bottom:16px">🏢</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:8px">Welcome to CREDVENT</h2>
+    <p style="color:var(--text3);margin-bottom:26px;font-size:13px">Get started by creating teams and adding your employees</p>
+    <div class="row" style="justify-content:center;gap:10px">
+      <button class="btn btn-p" onclick="set({page:'teams'})"><i class="fa-solid fa-plus"></i>Add First Team</button>
+      <button class="btn btn-g" onclick="openAddEmpModal()"><i class="fa-solid fa-user-plus"></i>Add Employee</button>
+    </div>
+  </div>`;
+
+  let pres=0,abs=0,late=0;
+  DB.employees.forEach(e=>{
+    const s=statusFor(e.id,CY,CM,CD);
+    if(s==='P') pres++;
+    else if(s==='LL'||s==='LLHD') late++;
+    else if(s==='A') abs++;
+  });
+  const tot=DB.employees.length;
+  const grossTotal=DB.employees.reduce((a,e)=>a+(parseFloat(e.grossSalary)||0),0);
+
+  return `
+  <div class="metrics">
+    <div class="mc"><div class="bar" style="background:var(--orange)"></div>
+      <div class="mc-lbl">Total Employees</div><div class="mc-val" style="color:var(--orange)">${tot}</div>
+      <div class="mc-sub">${DB.teams.length} team${DB.teams.length!==1?'s':''}</div>
+      <div class="mc-ico"><i class="fa-solid fa-users"></i></div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--green)"></div>
+      <div class="mc-lbl">Present Today</div><div class="mc-val" style="color:var(--green)">${pres+late}</div>
+      <div class="mc-sub">${tot?Math.round((pres+late)/tot*100):0}% rate · ${late} late</div>
+      <div class="mc-ico"><i class="fa-solid fa-user-check"></i></div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--red)"></div>
+      <div class="mc-lbl">Absent Today</div><div class="mc-val" style="color:var(--red)">${abs}</div>
+      <div class="mc-sub">${tot-pres-late-abs} unmarked</div>
+      <div class="mc-ico"><i class="fa-solid fa-user-xmark"></i></div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--amber)"></div>
+      <div class="mc-lbl">Gross Payroll</div>
+      <div class="mc-val" style="font-size:${grossTotal>=100000?'18px':'26px'};color:var(--amber)">${fmtC(grossTotal)}</div>
+      <div class="mc-sub">${MONTHS[CM]} total</div>
+      <div class="mc-ico"><i class="fa-solid fa-rupee-sign"></i></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-people-group"></i>Team Attendance Today</div>
+      ${DB.teams.length===0?`<div class="empty"><p>No teams yet</p></div>`:
+      DB.teams.map(t=>{
+        const emps=teamEmps(t.id);
+        const p=emps.filter(e=>{const s=statusFor(e.id,CY,CM,CD);return s==='P'||s==='LL'||s==='LLHD'}).length;
+        const pct=emps.length?Math.round(p/emps.length*100):0;
+        return `<div style="margin-bottom:11px">
+          <div class="jb" style="margin-bottom:4px">
+            <div class="row" style="gap:7px"><span>${t.icon||'🏢'}</span><span style="font-size:13px;font-weight:600">${t.name}</span></div>
+            <span style="font-size:12px;color:var(--text2)">${p}/${emps.length} <span class="muted">· ${pct}%</span></span>
+          </div>
+          <div style="height:5px;background:var(--bg3);border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${t.color||'var(--orange)'};border-radius:3px;transition:width .6s"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-bolt"></i>Quick Actions</div>
+      <div class="g2" style="gap:10px">
+        ${[
+          {ico:'📋',t:'Mark Attendance',d:'Daily check-in',fn:"openBulkModal()"},
+          {ico:'💸',t:'View Payroll',d:'Salary slips',fn:"set({page:'payroll'})"},
+          {ico:'👤',t:'Add Employee',d:'New member',fn:"openAddEmpModal()"},
+          {ico:'🗓️',t:'Add Holiday',d:'Public holiday',fn:"openAddHolidayModal()"},
+        ].map(a=>`<div class="card-flat" style="cursor:pointer;transition:all .12s" onclick="${a.fn}" onmouseover="this.style.borderColor='var(--orange-border)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:24px;margin-bottom:7px">${a.ico}</div>
+          <div style="font-size:13px;font-weight:700">${a.t}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${a.d}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// TEAMS
+// ════════════════════════════════════════════════════════════════════════
+function pgTeams(){
+  return `<div class="jb" style="margin-bottom:16px">
+    <div style="font-size:13px;color:var(--text3)">${DB.teams.length} team${DB.teams.length!==1?'s':''}</div>
+    <button class="btn btn-p" onclick="openAddTeamModal()"><i class="fa-solid fa-plus"></i>Add Team</button>
+  </div>
+  ${DB.teams.length===0?`<div class="empty"><i class="fa-solid fa-sitemap"></i><p>No teams yet. Add your first team.</p></div>`:
+  `<div class="g3">
+    ${DB.teams.map(t=>{
+      const emps=teamEmps(t.id);
+      const p=emps.filter(e=>{const s=statusFor(e.id,CY,CM,CD);return s==='P'||s==='LL'||s==='LLHD'}).length;
+      const pct=emps.length?Math.round(p/emps.length*100):0;
+      return `<div class="card" style="cursor:default">
+        <div class="jb" style="margin-bottom:11px">
+          <div style="width:42px;height:42px;border-radius:10px;background:${t.color}20;display:flex;align-items:center;justify-content:center;font-size:20px">${t.icon||'🏢'}</div>
+          <div class="row" style="gap:5px">
+            <button class="btn btn-g btn-xs" onclick="openEditTeamModal('${t.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn btn-d btn-xs" onclick="deleteTeam('${t.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:3px">${t.name}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:2px"><i class="fa-solid fa-user-tie" style="font-size:10px;margin-right:4px"></i>${t.manager||'No manager'}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:11px">${emps.length} employee${emps.length!==1?'s':''}</div>
+        <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${t.color};border-radius:2px;transition:width .6s"></div>
+        </div>
+        <div style="margin-top:6px;font-size:11px;color:var(--text3)">${p}/${emps.length} present today (${pct}%)</div>
+      </div>`;
+    }).join('')}
+  </div>`}`;
+}
+window.deleteTeam=function(id){
+  if(!confirm('Delete this team? Employees will be unassigned.'))return;
+  DB.teams=DB.teams.filter(t=>t.id!==id);
+  DB.employees.forEach(e=>{if(e.teamId===id)e.teamId=null});
+  render();notify('Team deleted');
+  if(supabaseClient) deleteTeamFromSupabase(id);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// EMPLOYEES
+// ════════════════════════════════════════════════════════════════════════
+function pgEmps(){
+  const emps=teamEmps(S.empTeam);
+  return `<div class="jb" style="margin-bottom:14px;gap:10px;flex-wrap:wrap">
+    <div class="tabs">
+      <div class="tab ${S.empTeam==='all'?'on':''}" onclick="set({empTeam:'all'})">All (${DB.employees.length})</div>
+      ${DB.teams.map(t=>`<div class="tab ${S.empTeam===t.id?'on':''}" onclick="set({empTeam:'${t.id}'})">${t.icon} ${t.name}</div>`).join('')}
+    </div>
+    <button class="btn btn-p" onclick="openAddEmpModal()"><i class="fa-solid fa-user-plus"></i>Add Employee</button>
+  </div>
+  ${emps.length===0?`<div class="empty"><i class="fa-solid fa-users"></i><p>No employees found.</p></div>`:
+  `<div class="tw">
+    <table>
+      <thead><tr><th>Employee</th><th>Team</th><th>Designation</th><th>Gross Salary</th><th>PF Status</th><th>Login ID</th><th>Join Date</th><th>Actions</th></tr></thead>
+      <tbody>
+      ${emps.map(emp=>{
+        const t=getTeam(emp.teamId);
+        return `<tr>
+          <td><div class="row" style="gap:9px">
+            <div class="av" style="width:32px;height:32px;font-size:11px;background:${t?t.color+'20':'#f5f5f5'};color:${t?t.color:'#888'}">${ini(emp.name)}</div>
+            <div><div style="font-weight:700">${emp.name}</div><div class="mon" style="font-size:11px;color:var(--text3)">${emp.empCode}</div></div>
+          </div></td>
+          <td>${t?`<span class="badge" style="background:${t.color}18;color:${t.color};border:1px solid ${t.color}30">${t.icon} ${t.name}</span>`:'<span class="badge b-gy">—</span>'}</td>
+          <td style="color:var(--text2);font-size:12.5px">${emp.designation||'—'}</td>
+          <td class="mon" style="font-weight:600;font-size:12.5px">${fmtC(emp.grossSalary)}</td>
+          <td>${emp.pfOpted?`<span class="badge b-gr"><i class="fa-solid fa-check"></i>Opted</span>`:`<span class="badge b-gy">No PF</span>`}</td>
+          <td class="mon" style="font-size:12px;color:var(--blue)">${emp.loginId||'—'}</td>
+          <td style="font-size:12px;color:var(--text3)">${fmtDate(emp.joinDate)}</td>
+          <td><div class="row" style="gap:5px">
+            <button class="btn btn-g btn-xs" onclick="openEditEmpModal('${emp.id}')"><i class="fa-solid fa-pen"></i>Edit</button>
+            <button class="btn btn-g btn-xs" onclick="openPayslipModal('${emp.id}',${CM},${CY})"><i class="fa-solid fa-file-invoice"></i>Slip</button>
+            <button class="btn btn-d btn-xs" onclick="deleteEmp('${emp.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div></td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table>
+  </div>`}`;
+}
+window.deleteEmp=function(id){
+  if(!confirm('Delete this employee and all their data?'))return;
+  const emp=getEmp(id);
+  if(emp?.loginId) delete DB.credentials[emp.loginId];
+  DB.employees=DB.employees.filter(e=>e.id!==id);
+  delete DB.attendance[id];
+  render();notify('Employee deleted');
+  if(supabaseClient) deleteEmployeeFromSupabase(id);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// ATTENDANCE (ADMIN)
+// ════════════════════════════════════════════════════════════════════════
+function pgAtt(){
+  const y=S.attY,m=S.attM,tid=S.attTeam;
+  const emps=teamEmps(tid);
+  const days=dim(y,m);
+  const nums=Array.from({length:days},(_,i)=>i+1);
+  return `<div class="jb" style="margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div class="tabs" style="flex-wrap:wrap;gap:2px">
+      <div class="tab ${tid==='all'?'on':''}" onclick="set({attTeam:'all'})">All</div>
+      ${DB.teams.map(t=>`<div class="tab ${tid===t.id?'on':''}" onclick="set({attTeam:'${t.id}'})">${t.icon} ${t.name}</div>`).join('')}
+    </div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">
+      <select onchange="set({attM:parseInt(this.value)})" style="width:130px">
+        ${MONTHS.map((mn,i)=>`<option value="${i}" ${i===m?'selected':''}>${mn}</option>`).join('')}
+      </select>
+      <select onchange="set({attY:parseInt(this.value)})" style="width:90px">
+        ${[2023,2024,2025,2026].map(yr=>`<option value="${yr}" ${yr===y?'selected':''}>${yr}</option>`).join('')}
+      </select>
+      <button class="btn btn-p btn-sm" onclick="openBulkModal()"><i class="fa-solid fa-calendar-plus"></i>Bulk Mark</button>
+    </div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:13px 16px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div style="font-size:13px;font-weight:700">${MONTHS[m]} ${y}</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        ${ALL_STATUSES.map(s=>`<span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:${STATUS[s].clr}">
+          <span style="width:9px;height:9px;border-radius:2px;background:${STATUS[s].bg};border:1px solid ${STATUS[s].bdr};display:inline-block"></span>${STATUS[s].label}
+        </span>`).join('')}
+      </div>
+    </div>
+    ${emps.length===0?`<div class="empty"><p>No employees in this selection</p></div>`:
+    `<div class="sx">
+      <table style="min-width:${190+days*26}px">
+        <thead><tr>
+          <th style="min-width:165px;position:sticky;left:0;background:var(--bg3);z-index:2;box-shadow:2px 0 4px rgba(0,0,0,.04)">Employee</th>
+          ${nums.map(d=>{
+            const sun=isSun(y,m,d),ph=isPH(y,m,d),it=isToday(y,m,d);
+            return `<th style="text-align:center;padding:8px 2px;min-width:26px;${sun||ph?'color:#94a3b8':''}${it?';color:var(--orange);font-weight:900':''}" title="${new Date(y,m,d).toLocaleDateString('en-IN',{weekday:'short'})}">${d}</th>`;
+          }).join('')}
+          <th style="min-width:34px" title="Present">P</th>
+          <th style="min-width:34px" title="Late Login">LL</th>
+          <th style="min-width:34px" title="Half Day">HD</th>
+          <th style="min-width:34px" title="Jelly Leave">J</th>
+          <th style="min-width:34px" title="Absent">A</th>
+        </tr></thead>
+        <tbody>
+        ${emps.map(emp=>{
+          const t=getTeam(emp.teamId);
+          const sm=attSummary(emp.id,y,m);
+          return `<tr>
+            <td style="position:sticky;left:0;background:var(--bg2);z-index:1;box-shadow:2px 0 4px rgba(0,0,0,.04)">
+              <div class="row" style="gap:7px">
+                <div class="av" style="width:26px;height:26px;font-size:10px;background:${t?t.color+'20':'#f5f5f5'};color:${t?t.color:'#888'}">${ini(emp.name)}</div>
+                <div><div style="font-size:12px;font-weight:600">${emp.name}</div><div class="mon" style="font-size:10px;color:var(--text3)">${emp.empCode}</div></div>
+              </div>
+            </td>
+            ${nums.map(d=>{
+              const detail=attDetail(emp.id,y,m,d);
+              const s=detail.status;
+              const st=s?STATUS[s]:null;
+              const editable=canEditDate(y,m,d);
+              const tip=editable ? detail.title : 'Locked — future date';
+              return `<td style="padding:3px 2px;text-align:center">
+                <div class="sc" ${editable?`onclick="openMarkModal('${emp.id}','${detail.key}')"`:''}
+                  style="background:${st?st.bg:'var(--bg3)'};color:${st?st.clr:'var(--text3)'};border-color:${st?st.bdr:'var(--border)'};cursor:${editable?'pointer':'not-allowed'};opacity:${editable?1:0.45}"
+                  title="${tip}">${s?STATUS[s].short:'·'}</div>
+              </td>`;
+            }).join('')}
+            <td style="font-weight:700;color:var(--green);font-size:12px;text-align:center">${sm.P}</td>
+            <td style="color:var(--amber);font-size:12px;text-align:center">${sm.LL+sm.LLHD}</td>
+            <td style="color:var(--blue);font-size:12px;text-align:center">${sm.HD+sm.LLHD}</td>
+            <td style="color:var(--pink);font-size:12px;text-align:center">${sm.J}</td>
+            <td style="color:var(--red);font-size:12px;text-align:center">${sm.A}</td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table>
+    </div>`}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// PAYROLL (ADMIN)
+// ════════════════════════════════════════════════════════════════════════
+function pgPayroll(){
+  const m=S.payM,y=S.payY,tid=S.payTeam;
+  const emps=teamEmps(tid);
+  return `<div class="jb" style="margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div class="tabs" style="flex-wrap:wrap">
+      <div class="tab ${tid==='all'?'on':''}" onclick="set({payTeam:'all'})">All</div>
+      ${DB.teams.map(t=>`<div class="tab ${tid===t.id?'on':''}" onclick="set({payTeam:'${t.id}'})">${t.icon} ${t.name}</div>`).join('')}
+    </div>
+    <div class="row" style="gap:8px">
+      <select onchange="set({payM:parseInt(this.value)})" style="width:130px">
+        ${MONTHS.map((mn,i)=>`<option value="${i}" ${i===m?'selected':''}>${mn}</option>`).join('')}
+      </select>
+      <select onchange="set({payY:parseInt(this.value)})" style="width:90px">
+        ${[2023,2024,2025,2026].map(yr=>`<option value="${yr}" ${yr===y?'selected':''}>${yr}</option>`).join('')}
+      </select>
+    </div>
+  </div>
+  ${emps.length===0?`<div class="empty"><i class="fa-solid fa-money-bill-wave"></i><p>No employees found</p></div>`:
+  `<div class="tw">
+    <table>
+      <thead><tr><th>Employee</th><th>Gross/30</th><th>Earn Days</th><th>Earned</th><th>Abs/J</th><th>Half</th><th>LL Days</th><th>LL Ded.</th><th>PF Ded.</th><th>PT</th><th>Total Ded.</th><th>Net Pay</th><th>Actions</th></tr></thead>
+      <tbody>
+      ${emps.map(emp=>{
+        const c=calcPay(emp.id,y,m);
+        if(!c)return '';
+        const t=getTeam(emp.teamId);
+        return `<tr>
+          <td><div class="row" style="gap:8px">
+            <div class="av" style="width:28px;height:28px;font-size:10px;background:${t?t.color+'20':'#f5f5f5'};color:${t?t.color:'#888'}">${ini(emp.name)}</div>
+            <div><div style="font-weight:600;font-size:12.5px">${emp.name}</div><div class="mon" style="font-size:10.5px;color:var(--text3)">${emp.empCode}</div></div>
+          </div></td>
+          <td class="mon" style="font-size:12px;color:var(--text2)">${fmtC(c.perDay)}</td>
+          <td style="font-size:12.5px;color:var(--blue);font-weight:600">${c.earningDays.toFixed(1)}</td>
+          <td class="mon" style="font-size:12.5px;font-weight:600">${fmtC(c.earned)}</td>
+          <td style="font-size:12.5px;color:${c.absentDays?'var(--red)':'var(--text3)'};font-weight:${c.absentDays?'700':'400'}">${c.absentDays||'—'}</td>
+          <td style="font-size:12.5px;color:${c.halfDays?'var(--blue)':'var(--text3)'};font-weight:${c.halfDays?'700':'400'}">${c.halfDays||'—'}</td>
+          <td style="font-size:12.5px;color:${c.totalLL>0?'var(--amber)':'var(--text3)'};font-weight:${c.totalLL>0?'700':'400'}">${c.totalLL||'—'}</td>
+          <td class="mon" style="font-size:12px;color:var(--red)">${c.llDed?`−${fmtC(c.llDed)}`:'—'}</td>
+          <td class="mon" style="font-size:12px;color:var(--red)">${c.pfDed?`−${fmtC(c.pfDed)}`:'—'}</td>
+          <td class="mon" style="font-size:12px;color:var(--red)">${c.pt?`−₹${c.pt}`:'—'}</td>
+          <td class="mon" style="font-size:12px;color:var(--red);font-weight:600">${c.totalDed?`−${fmtC(c.totalDed)}`:'—'}</td>
+          <td class="mon" style="font-size:13px;font-weight:800;color:var(--green)">${fmtC(c.net)}</td>
+          <td>
+            <button class="btn btn-p btn-sm" onclick="openPayslipModal('${emp.id}',${m},${y})"><i class="fa-solid fa-eye"></i>View</button>
+          </td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table>
+  </div>`}`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// HOLIDAYS (ADMIN)
+// ════════════════════════════════════════════════════════════════════════
+function pgHolidays(){
+  const list=Object.entries(DB.publicHolidays).sort(([a],[b])=>a.localeCompare(b));
+  return `<div class="jb" style="margin-bottom:16px">
+    <div style="font-size:13px;color:var(--text3)">${list.length} public holiday${list.length!==1?'s':''} configured</div>
+    <button class="btn btn-p" onclick="openAddHolidayModal()"><i class="fa-solid fa-plus"></i>Add Holiday</button>
+  </div>
+  <div class="card">
+    <div class="info"><i class="fa-solid fa-info-circle"></i>
+      <div>Sundays auto-apply as <b>SH (Sunday Holiday)</b> for all employees. Admin can override any Sunday per-employee — mark as <b>SW</b> (Sunday Work), <b>J</b> (Jelly Leave), or any other status.</div>
+    </div>
+    ${list.length===0?`<div class="empty" style="padding:30px 0"><p>No public holidays configured</p></div>`:
+    `<div class="tw">
+      <table>
+        <thead><tr><th>Date</th><th>Day</th><th>Holiday Name</th><th></th></tr></thead>
+        <tbody>
+        ${list.map(([key,ph])=>{
+          const d=new Date(key+'T12:00:00');
+          return `<tr>
+            <td class="mon" style="font-size:12.5px">${key}</td>
+            <td style="font-size:12.5px;color:var(--text2)">${d.toLocaleDateString('en-IN',{weekday:'long'})}</td>
+            <td style="font-weight:600">${ph.name}</td>
+            <td><button class="btn btn-d btn-sm" onclick="deleteHoliday('${key}')"><i class="fa-solid fa-trash"></i>Remove</button></td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table>
+    </div>`}
+  </div>`;
+}
+window.deleteHoliday=function(key){
+  delete DB.publicHolidays[key];
+  render();notify('Holiday removed');
+  if(supabaseClient) deleteHolidayFromSupabase(key);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// EMPLOYEE: DASHBOARD
+// ════════════════════════════════════════════════════════════════════════
+function pgEmpDash(){
+  const emp=getEmp(S.empId);
+  if(!emp)return `<div class="empty"><p>Employee not found</p></div>`;
+  const t=getTeam(emp.teamId);
+  const sm=attSummary(emp.id,CY,CM);
+  const c=calcPay(emp.id,CY,CM);
+  const todS=statusFor(emp.id,CY,CM,CD);
+  const daysPassed=daysPassedInMonth(CY,CM);
+  const presentEquivalent=sm.P + (sm.HD+sm.LLHD)*0.5;
+  const pct=daysPassed?Math.round((presentEquivalent/daysPassed)*100):0;
+  return `
+  <div style="background:linear-gradient(135deg,var(--orange-bg),#fff);border:1.5px solid var(--orange-border);border-radius:var(--r2);padding:18px 22px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div class="av" style="width:54px;height:54px;font-size:18px;background:${t?t.color+'20':'#f5f5f5'};color:${t?t.color:'#888'}">${ini(emp.name)}</div>
+    <div style="flex:1;min-width:200px">
+      <div style="font-size:21px;font-weight:800;letter-spacing:-.3px">${emp.name}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:3px">${emp.designation||'—'} · ${t?t.icon+' '+t.name:'Unassigned'} · ${emp.empCode}</div>
+      <div style="font-size:12px;color:var(--text3)">Joined: ${fmtDate(emp.joinDate)}</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:5px">Today's Status</div>
+      ${todS?`<span class="badge" style="background:${STATUS[todS].bg};color:${STATUS[todS].clr};border:1px solid ${STATUS[todS].bdr};font-size:12px;padding:4px 12px">${STATUS[todS].label}</span>`:`<span class="badge b-gy">Not Marked</span>`}
+    </div>
+  </div>
+  <div class="metrics">
+    <div class="mc"><div class="bar" style="background:var(--green)"></div>
+      <div class="mc-lbl">Days Present</div><div class="mc-val" style="color:var(--green)">${sm.P}</div><div class="mc-sub">${MONTHS[CM]}</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--amber)"></div>
+      <div class="mc-lbl">Late Logins</div><div class="mc-val" style="color:var(--amber)">${sm.LL+sm.LLHD}</div>
+      <div class="mc-sub">₹${c?c.llDed:0} deducted</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--orange)"></div>
+      <div class="mc-lbl">Attendance %</div><div class="mc-val" style="color:var(--orange)">${pct}%</div><div class="mc-sub">This month</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--blue)"></div>
+      <div class="mc-lbl">Est. Net Pay</div><div class="mc-val" style="font-size:${c&&c.net>=100000?'18px':'26px'};color:var(--blue)">${c?fmtC(c.net):'—'}</div><div class="mc-sub">${MONTHS[CM]}</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-calendar-days"></i>${MONTHS[CM]} ${CY}</div>
+      ${renderCal(emp.id,CY,CM)}
+    </div>
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-chart-bar"></i>Monthly Summary</div>
+      ${attBreakdown(sm)}
+      <div class="div"></div>
+      <button class="btn btn-p" style="width:100%;justify-content:center" onclick="set({page:'emp-pay'})">
+        <i class="fa-solid fa-file-invoice-dollar"></i>View & Download Payslip
+      </button>
+    </div>
+  </div>`;
+}
+
+function attBreakdown(sm){
+  const items=[
+    {l:'Present',v:sm.P,c:'var(--green)'},
+    {l:'Late Login',v:sm.LL,c:'var(--amber)'},
+    {l:'Half Day',v:sm.HD,c:'var(--blue)'},
+    {l:'Late + Half',v:sm.LLHD,c:'#92400e'},
+    {l:'Absent',v:sm.A,c:'var(--red)'},
+    {l:'Public Holiday',v:sm.PH,c:'var(--purple)'},
+    {l:'Jelly Leave',v:sm.J,c:'var(--pink)'},
+    {l:'Sunday Off',v:sm.SH,c:'var(--text3)'},
+    {l:'Sunday Work',v:sm.SW,c:'var(--teal)'},
+  ];
+  return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+    ${items.map(it=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg3);border-radius:var(--r)">
+      <div style="width:8px;height:8px;border-radius:2px;background:${it.c};flex-shrink:0"></div>
+      <div style="flex:1;font-size:11.5px;color:var(--text2)">${it.l}</div>
+      <div style="font-size:16px;font-weight:800;color:${it.c};font-family:var(--mono)">${it.v}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// EMPLOYEE: MY ATTENDANCE
+// ════════════════════════════════════════════════════════════════════════
+function pgEmpAtt(){
+  const emp=getEmp(S.empId);
+  if(!emp)return '';
+  const m=S.myAttM,y=S.myAttY;
+  const sm=attSummary(emp.id,y,m);
+  return `<div class="row" style="margin-bottom:16px;flex-wrap:wrap;gap:8px">
+    <select onchange="set({myAttM:parseInt(this.value)})" style="width:140px">
+      ${MONTHS.map((mn,i)=>`<option value="${i}" ${i===m?'selected':''}>${mn}</option>`).join('')}
+    </select>
+    <select onchange="set({myAttY:parseInt(this.value)})" style="width:90px">
+      ${[2023,2024,2025,2026].map(yr=>`<option value="${yr}" ${yr===y?'selected':''}>${yr}</option>`).join('')}
+    </select>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-calendar"></i>${MONTHS[m]} ${y}</div>
+      ${renderCal(emp.id,y,m)}
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:5px">
+        ${ALL_STATUSES.map(s=>`<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 7px;border-radius:20px;background:${STATUS[s].bg};color:${STATUS[s].clr};border:1px solid ${STATUS[s].bdr}">${STATUS[s].label}</span>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-list-check"></i>Summary — ${MONTHS[m]} ${y}</div>
+      ${attBreakdown(sm)}
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// EMPLOYEE: MY PAYSLIP
+// ════════════════════════════════════════════════════════════════════════
+function pgEmpPay(){
+  const emp=getEmp(S.empId);
+  if(!emp)return '';
+  const m=S.myPayM,y=S.myPayY;
+  return `<div class="row" style="margin-bottom:18px;flex-wrap:wrap;gap:10px">
+    <select onchange="set({myPayM:parseInt(this.value)})" style="width:140px">
+      ${MONTHS.map((mn,i)=>`<option value="${i}" ${i===m?'selected':''}>${mn}</option>`).join('')}
+    </select>
+    <select onchange="set({myPayY:parseInt(this.value)})" style="width:90px">
+      ${[2023,2024,2025,2026].map(yr=>`<option value="${yr}" ${yr===y?'selected':''}>${yr}</option>`).join('')}
+    </select>
+    <button class="btn btn-p" onclick="downloadPayslip('${emp.id}',${m},${y})">
+      <i class="fa-solid fa-download"></i>Download Payslip
+    </button>
+  </div>
+  ${buildPayslip(emp.id,m,y)}`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// CALENDAR RENDER
+// ════════════════════════════════════════════════════════════════════════
+function renderCal(empId,y,m){
+  const days=dim(y,m),first=fd(y,m);
+  let cells='';
+  for(let i=0;i<first;i++) cells+=`<div class="cd empty"></div>`;
+  for(let d=1;d<=days;d++){
+    const detail=attDetail(empId,y,m,d);
+    const s=detail.status;
+    const st=s?STATUS[s]:null;
+    const it=isToday(y,m,d);
+    const editable=canEditDate(y,m,d);
+    const onclick=S.role==='admin'&&editable?`onclick="openMarkModal('${empId}','${detail.key}')"`:'';
+    const tip=editable ? detail.title : 'Locked — future date';
+    cells+=`<div class="cd${it?' today-ring':''}" 
+      style="background:${st?st.bg:'transparent'};color:${st?st.clr:'var(--text3)'};border-color:${st?st.bdr:'transparent'};cursor:${editable?'pointer':'not-allowed'};opacity:${editable?1:0.45}"
+      ${onclick} title="${tip}">${d}</div>`;
+  }
+  return `<div class="cg">${DAYS.map(d=>`<div class="ch">${d}</div>`).join('')}${cells}</div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// PAYSLIP BUILDER
+// ════════════════════════════════════════════════════════════════════════
+function buildPayslip(empId,m,y){
+  const emp=getEmp(empId);
+  if(!emp) return '<p style="color:var(--text3)">Employee not found</p>';
+  const t=getTeam(emp.teamId);
+  const c=calcPay(empId,y,m);
+  if(!c) return '';
+  const {gross,perDay,earningDays,earned,absentDed,halfDayDed,totalLL,llDed,pfEmp,pfEr,pfDed,pt,totalDed,net,s}=c;
+  const slipNo=`PS${y}${String(m+1).padStart(2,'0')}${emp.empCode}`;
+  const payDate=new Date(y,m+1,1).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const basic=Math.round(earned*0.5), hra=Math.round(earned*0.3), conveyance=Math.round(earned*0.1), special=Math.round(earned*0.1);
+  const uan=(emp.uan || `10${emp.empCode.replace(/\D/g,'').slice(-8).padStart(8,'0')}`).trim();
+  return `
+  <div class="ps" id="ps-${empId}">
+    <div class="psh">
+      <div class="jb" style="flex-wrap:wrap;gap:10px">
+        <div>
+          <div class="ps-co">CREDVENT</div>
+          <div class="ps-tg">#71/72 3rd floor Koramangala 5th block,
+            Industrial layout, Bangalore - 560095</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:700;opacity:.9">PAYSLIP</div>
+          <div style="font-size:11px;opacity:.7;margin-top:3px">${MONTHS[m]} ${y}</div>
+        </div>
+      </div>
+      <div class="ps-mr">
+        ${[['Slip No.',slipNo],['Pay Period',MONTHS[m]+' '+y],['Pay Date',payDate],['Per-Day Rate',fmtC(perDay)]].map(([l,v])=>`<div class="ps-mi"><div class="lbl">${l}</div><div class="val">${v}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="psb">
+      <div class="ps-emp">
+        <div>
+          <div class="ps-en">${emp.name}</div>
+          <div class="ps-ei">
+            Employee ID: ${emp.empCode}<br>
+            Designation: ${emp.designation||'—'}<br>
+            Department: ${t?t.icon+' '+t.name:'—'}<br>
+            Joining Date: ${fmtDate(emp.joinDate)}
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="ps-ei">
+            PF Status: ${emp.pfOpted?'<span style="color:#16a34a;font-weight:700">Opted ✓</span>':'<span style="color:#9ca3af">Not Opted</span>'}<br>
+            ${emp.pfOpted?`UAN: ${uan}<br>`:''}
+            Gross Salary: ${fmtC(gross)} / month<br>
+            Calc. Basis: Gross ÷ 30 days
+          </div>
+        </div>
+      </div>
+      <div class="ps-ar">
+        ${[
+          {v:30,l:'Salary Basis',c:'#e8660a'},
+          {v:s.P,l:'Present',c:'#15803d'},
+          {v:s.LL+s.LLHD,l:'Late Login',c:'#a16207'},
+          {v:s.HD+s.LLHD,l:'Half Day',c:'#1d4ed8'},
+          {v:s.J,l:'Jelly Lv.',c:'#be185d'},
+          {v:s.PH,l:'PH',c:'#6d28d9'},
+          {v:s.A,l:'Absent',c:'#b91c1c'},
+          {v:earningDays.toFixed(1),l:'Earning Days',c:'#e8660a'},
+        ].map(i=>`<div class="ps-ai"><div class="ps-av" style="color:${i.c}">${i.v}</div><div class="ps-al">${i.l}</div></div>`).join('')}
+      </div>
+      <div class="ps-grid">
+        <table class="ps-tbl">
+          <thead><tr><th>Earnings</th><th style="text-align:right">₹</th></tr></thead>
+          <tbody>
+            <tr><td>Basic Salary (50%)</td><td style="text-align:right;font-family:'DM Mono',monospace">${basic.toLocaleString('en-IN')}</td></tr>
+            <tr><td>HRA (30%)</td><td style="text-align:right;font-family:'DM Mono',monospace">${hra.toLocaleString('en-IN')}</td></tr>
+            <tr><td>Conveyance (10%)</td><td style="text-align:right;font-family:'DM Mono',monospace">${conveyance.toLocaleString('en-IN')}</td></tr>
+            <tr><td>Special Allowance (10%)</td><td style="text-align:right;font-family:'DM Mono',monospace">${special.toLocaleString('en-IN')}</td></tr>
+            <tr><td style="color:#e8660a">Total Earned</td><td style="text-align:right;font-family:'DM Mono',monospace;color:#e8660a">${(basic+hra+conveyance+special).toLocaleString('en-IN')}</td></tr>
+          </tbody>
+        </table>
+        <table class="ps-tbl">
+          <thead><tr><th>Deductions</th><th style="text-align:right">₹</th></tr></thead>
+          <tbody>
+            ${absentDed?`<tr><td>Absent / Jelly Leave Deduction</td><td style="text-align:right;font-family:'DM Mono',monospace;color:#dc2626">${absentDed.toLocaleString('en-IN')}</td></tr>`:''}
+            ${halfDayDed?`<tr><td>Half Day Deduction</td><td style="text-align:right;font-family:'DM Mono',monospace;color:#dc2626">${halfDayDed.toLocaleString('en-IN')}</td></tr>`:''}
+            ${totalLL>0?`<tr><td>Late Login (${totalLL} day${totalLL>1?'s':''})</td><td style="text-align:right;font-family:'DM Mono',monospace;color:#dc2626">${llDed.toLocaleString('en-IN')}</td></tr>`:''}
+            ${emp.pfOpted?`<tr><td>Provident Fund (Emp. + Employer)</td><td style="text-align:right;font-family:'DM Mono',monospace;color:#dc2626">${pfDed.toLocaleString('en-IN')}</td></tr>`:''}
+            ${emp.pfOpted?`<tr><td>Professional Tax</td><td style="text-align:right;font-family:'DM Mono',monospace;color:#dc2626">${pt.toLocaleString('en-IN')}</td></tr>`:''}
+            ${!totalDed?`<tr><td style="color:#9ca3af">No deductions</td><td></td></tr>`:''}
+            <tr><td style="color:#dc2626">Total Deductions</td><td style="text-align:right;font-family:'DM Mono',monospace;color:#dc2626">${totalDed.toLocaleString('en-IN')}</td></tr>
+          </tbody>
+        </table>
+      </div>
+      ${emp.pfOpted?`<div style="margin-bottom:12px;padding:10px 12px;background:#f0fdf4;border:1px solid #86efac;border-radius:7px;font-size:11px;color:#15803d">
+        <i class="fa-solid fa-circle-info" style="margin-right:6px"></i><b>PF Note:</b> Employee PF ₹${pfEmp.toLocaleString('en-IN')} + employer PF ₹${pfEr.toLocaleString('en-IN')} are both deducted from salary, so total PF deduction is ₹${pfDed.toLocaleString('en-IN')} / month.
+      </div>`:''}
+      ${totalLL>0?`<div class="ps-dn">
+        <i class="fa-solid fa-clock" style="margin-right:6px"></i><b>Late Login Deduction:</b> ${totalLL} late login day${totalLL>1?'s':''} · ${totalLL<=3?`${totalLL} × ₹150 = ₹${llDed}`:`3 × ₹150 + ${totalLL-3} × ₹200 = ₹450 + ₹${(totalLL-3)*200} = ₹${llDed}`}
+      </div>`:''}
+      <div class="ps-net">
+        <div>
+          <div class="ps-nl">NET PAY — ${MONTHS[m]} ${y}</div>
+          <div style="font-size:11px;color:#9ca3af;margin-top:3px">Take-home salary after all deductions</div>
+        </div>
+        <div class="ps-nv">${fmtC(net)}</div>
+      </div>
+    </div>
+    <div class="ps-ft">
+      <span>System-generated payslip. No signature required.</span>
+      <span>CREDVENT HR · ${new Date().toLocaleDateString('en-IN')}</span>
+    </div>
+  </div>`;
+}
+
+window.downloadPayslip=function(empId,m,y){
+  const emp=getEmp(empId);
+  if(!emp){notify('Employee not found');return}
+  const content=buildPayslip(empId,m,y);
+  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  <title>Payslip - ${emp.name} - ${MONTHS[m]} ${y}</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#f5f4f0;padding:30px;display:flex;justify-content:center}
+    .ps{max-width:740px;width:100%;background:#fff;border-radius:12px;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;border:1.5px solid #e5e7eb}
+    .psh{background:linear-gradient(135deg,#e8660a,#9a3d07);color:#fff;padding:22px 26px}
+    .ps-co{font-size:22px;font-weight:900;letter-spacing:-.5px}
+    .ps-tg{font-size:11px;opacity:.75;margin-top:2px}
+    .ps-mr{display:flex;gap:22px;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.2);flex-wrap:wrap}
+    .ps-mi .lbl{font-size:9.5px;opacity:.6;margin-bottom:2px}
+    .ps-mi .val{font-size:13px;font-weight:700}
+    .psb{padding:22px 26px;color:#1a1814}
+    .ps-emp{display:flex;justify-content:space-between;padding-bottom:14px;border-bottom:1.5px solid #e5e5e5;margin-bottom:15px;flex-wrap:wrap;gap:12px}
+    .ps-en{font-size:20px;font-weight:900;color:#e8660a;margin-bottom:3px}
+    .ps-ei{font-size:12px;color:#666;line-height:1.8}
+    .ps-ar{display:flex;gap:0;margin-bottom:15px;border:1.5px solid #e5e5e5;border-radius:8px;overflow:hidden}
+    .ps-ai{flex:1;padding:9px 5px;text-align:center;border-right:1px solid #e5e5e5}
+    .ps-ai:last-child{border-right:none}
+    .ps-av{font-size:18px;font-weight:800;font-family:'DM Mono',monospace}
+    .ps-al{font-size:9px;color:#888;margin-top:2px}
+    .ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .ps-tbl{width:100%;border-collapse:collapse;border:1.5px solid #e5e5e5;border-radius:8px;overflow:hidden}
+    .ps-tbl th{background:#f8f8f8;padding:8px 11px;font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #e5e5e5;text-align:left}
+    .ps-tbl td{padding:8px 11px;font-size:12.5px;border-bottom:1px solid #f0f0f0;color:#333}
+    .ps-tbl tr:last-child td{border-bottom:none;font-weight:700;background:#fafafa}
+    .ps-net{background:linear-gradient(135deg,#fff4ec,#ffe0c3);border:2px solid #fbd5b5;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+    .ps-nl{font-size:15px;font-weight:700;color:#e8660a}
+    .ps-nv{font-size:26px;font-weight:900;color:#e8660a;font-family:'DM Mono',monospace}
+    .ps-dn{margin-top:10px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:7px;font-size:11px;color:#92400e;line-height:1.6}
+    .ps-ft{padding:12px 26px;background:#f8f8f8;border-top:1.5px solid #e5e5e5;display:flex;justify-content:space-between;font-size:11px;color:#999;flex-wrap:wrap;gap:6px}
+    .jb{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
+    .row{display:flex;align-items:center;gap:10px}
+    @media print{body{background:#fff;padding:10px}.ps{box-shadow:none}}</style>
+  </head><body>${content}</body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`Payslip_${emp.name.replace(/\s+/g,'_')}_${MONTHS[m]}_${y}.html`;
+  a.click();
+  notify('Payslip downloaded!');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// MODALS
+// ════════════════════════════════════════════════════════════════════════
+function modalHTML(){
+  if(!S.modal) return '';
+  switch(S.modal.type){
+    case 'mark':       return mMark();
+    case 'bulk':       return mBulk();
+    case 'addTeam':    return mTeam(false);
+    case 'editTeam':   return mTeam(true);
+    case 'addEmp':     return mEmp(false);
+    case 'editEmp':    return mEmp(true);
+    case 'payslip':    return mPayslip();
+    case 'addHoliday': return mHoliday();
+    default: return '';
+  }
+}
+
+// MARK ATTENDANCE MODAL
+function mMark(){
+  const {empId,dateStr}=S.modal;
+  const emp=getEmp(empId);
+  const t=getTeam(emp?.teamId);
+  const attEntry=normalizeAttendanceEntry(DB.attendance[empId]?.[dateStr]);
+  const cur=attEntry.status||(()=>{
+    const parts=dateStr.split('-');
+    const y=parseInt(parts[0]),m=parseInt(parts[1])-1,d=parseInt(parts[2]);
+    return isPH(y,m,d)?'PH':isSun(y,m,d)?'SH':'';
+  })();
+  const comment=attEntry.comment||'';
+  const dispDate=new Date(dateStr+'T12:00:00').toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  return `<div class="ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal modal-md">
+    <div class="mh"><div class="modal-ttl"><i class="fa-solid fa-calendar-pen" style="color:var(--orange);margin-right:7px"></i>Mark Attendance</div>
+      <div class="mx" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="mb">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--bg3);border-radius:var(--r);margin-bottom:16px;border:1px solid var(--border)">
+        <div class="av" style="width:34px;height:34px;font-size:12px;background:${t?t.color+'20':'#f5f5f5'};color:${t?t.color:'#888'}">${emp?ini(emp.name):'?'}</div>
+        <div>
+          <div style="font-weight:700">${emp?.name}</div>
+          <div style="font-size:11.5px;color:var(--text3)">${dispDate}</div>
+        </div>
+        ${cur?`<span class="badge" style="margin-left:auto;background:${STATUS[cur].bg};color:${STATUS[cur].clr};border:1px solid ${STATUS[cur].bdr}">Current: ${STATUS[cur].label}</span>`:''}
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px">Select Status</div>
+      <div class="spk" id="spk">
+        ${ALL_STATUSES.map(s=>`<div class="sp ${cur===s?'sel':''}" onclick="pickStatus('${s}',this)" data-code="${s}">
+          <div class="sp-code" style="color:${STATUS[s].clr}">${STATUS[s].short}</div>
+          <div class="sp-name">${STATUS[s].label}</div>
+        </div>`).join('')}
+      </div>
+      <div class="fg" style="margin-top:12px;margin-bottom:0">
+        <label class="fl">Comment</label>
+        <textarea id="att-comment" rows="3" placeholder="Optional note for this attendance entry">${comment}</textarea>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="saveMarkAtt('${empId}','${dateStr}')"><i class="fa-solid fa-check"></i>Save</button>
+    </div>
+  </div>
+</div>`;
+}
+window.pickStatus=function(code,el){
+  S.modal._pick=code;
+  document.querySelectorAll('.sp').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+window.saveMarkAtt=async function(empId,dateStr){
+  const s=S.modal._pick||document.querySelector('.sp.sel')?.dataset.code;
+  if(!s){notify('Please select a status');return}
+  const comment=(document.getElementById('att-comment')?.value||'').trim();
+  if(!DB.attendance[empId]) DB.attendance[empId]={};
+  DB.attendance[empId][dateStr]={status:s, comment};
+  closeModal();
+  notify(STATUS[s].label+' marked for '+getEmp(empId)?.name);
+  if(supabaseClient) await syncAttendanceToSupabase(empId,dateStr,s,comment);
+}
+
+// BULK MODAL
+function mBulk(){
+  const date=S.modal.date||todayKey();
+  const tid=S.modal.tid||'all';
+  const emps=teamEmps(tid);
+  const parts=date.split('-');
+  const y=parseInt(parts[0]||CY), mm=parseInt(parts[1]||CM+1)-1;
+  const maxDate=maxEditableDate(y,mm);
+  return `<div class="ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal modal-lg">
+    <div class="mh"><div class="modal-ttl"><i class="fa-solid fa-calendar-plus" style="color:var(--orange);margin-right:7px"></i>Bulk Mark Attendance</div>
+      <div class="mx" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="mb">
+      <div class="fr2" style="margin-bottom:13px">
+        <div class="fg" style="margin:0">
+          <label class="fl">Date</label>
+          <input type="date" id="b-date" value="${date}" max="${maxDate}" onchange="S.modal.date=this.value;render()">
+        </div>
+        <div class="fg" style="margin:0">
+          <label class="fl">Team</label>
+          <select id="b-team" onchange="S.modal.tid=this.value;render()">
+            <option value="all">All Teams</option>
+            ${DB.teams.map(t=>`<option value="${t.id}" ${tid===t.id?'selected':''}>${t.icon} ${t.name}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="fr2" style="margin-bottom:13px">
+        <div class="fg" style="margin:0">
+          <label class="fl">Mark All Selected As</label>
+          <select id="b-status">
+            ${ALL_STATUSES.map(s=>`<option value="${s}">${STATUS[s].label} (${s})</option>`).join('')}
+          </select>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:8px">
+          <button class="btn btn-g btn-sm" onclick="document.querySelectorAll('.bcb').forEach(c=>c.checked=true)">Select All</button>
+          <button class="btn btn-g btn-sm" onclick="document.querySelectorAll('.bcb').forEach(c=>c.checked=false)">None</button>
+        </div>
+      </div>
+      ${emps.length===0?`<div class="empty"><p>No employees in selection</p></div>`:
+      `<div style="max-height:330px;overflow-y:auto;display:grid;gap:5px">
+        ${emps.map(emp=>{
+          const t=getTeam(emp.teamId);
+          const parts=date.split('-');
+          const cs=parts.length===3?statusFor(emp.id,parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2])):null;
+          return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)">
+            <input class="bcb" type="checkbox" value="${emp.id}" checked>
+            <div class="av" style="width:28px;height:28px;font-size:10px;background:${t?t.color+'20':'#f5f5f5'};color:${t?t.color:'#888'}">${ini(emp.name)}</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600">${emp.name}</div><div style="font-size:10.5px;color:var(--text3)">${emp.empCode} · ${t?t.name:'—'}</div></div>
+            ${cs?`<span class="badge" style="background:${STATUS[cs].bg};color:${STATUS[cs].clr};border:1px solid ${STATUS[cs].bdr}">${STATUS[cs].label}</span>`:`<span class="badge b-gy">—</span>`}
+          </div>`;
+        }).join('')}
+      </div>`}
+    </div>
+    <div class="mf">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="saveBulkAtt()"><i class="fa-solid fa-check-double"></i>Mark Selected</button>
+    </div>
+  </div>
+</div>`;
+}
+window.saveBulkAtt=async function(){
+  const date=document.getElementById('b-date')?.value||todayKey();
+  const status=document.getElementById('b-status')?.value;
+  if(!status)return;
+  let n=0;
+  const syncOps=[];
+  document.querySelectorAll('.bcb:checked').forEach(cb=>{
+    const eid=cb.value;
+    if(!DB.attendance[eid]) DB.attendance[eid]={};
+    DB.attendance[eid][date]=status;
+    n++;
+    if(supabaseClient) syncOps.push(syncAttendanceToSupabase(eid,date,status));
+  });
+  if(syncOps.length) await Promise.all(syncOps);
+  closeModal();
+  notify(`${n} employee${n>1?'s':''} marked as ${STATUS[status].label}`);
+}
+
+// ADD/EDIT TEAM MODAL
+function mTeam(editing){
+  const t=editing?getTeam(S.modal.tid):{};
+  return `<div class="ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal modal-sm">
+    <div class="mh"><div class="modal-ttl">${editing?'Edit Team':'Add New Team'}</div>
+      <div class="mx" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="mb">
+      <div class="fg"><label class="fl">Team Name<span class="req">*</span></label>
+        <input type="text" id="t-name" placeholder="e.g. Engineering" value="${t?.name||''}">
+      </div>
+      <div class="fg"><label class="fl">Manager Name</label>
+        <input type="text" id="t-mgr" placeholder="e.g. Ramesh Kumar" value="${t?.manager||''}">
+      </div>
+      <div class="fr2">
+        <div class="fg" style="margin:0"><label class="fl">Color</label>
+          <select id="t-clr">
+            ${TEAM_COLORS.map((c,i)=>`<option value="${c}" ${(t?.color||TEAM_COLORS[0])===c?'selected':''}>${['Orange','Purple','Teal','Blue','Pink','Green','Amber','Gray','Deep Orange','Indigo'][i]||c}</option>`).join('')}
+          </select>
+        </div>
+        <div class="fg" style="margin:0"><label class="fl">Icon</label>
+          <select id="t-ico">
+            ${TEAM_ICONS.map(ic=>`<option value="${ic}" ${(t?.icon||TEAM_ICONS[0])===ic?'selected':''}>${ic}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="saveTeam(${editing?`'${S.modal.tid}'`:'null'})">${editing?'Save Changes':'Add Team'}</button>
+    </div>
+  </div>
+</div>`;
+}
+window.saveTeam=async function(editId){
+  const name=(document.getElementById('t-name')?.value||'').trim();
+  const mgr=(document.getElementById('t-mgr')?.value||'').trim();
+  const clr=document.getElementById('t-clr')?.value||TEAM_COLORS[0];
+  const ico=document.getElementById('t-ico')?.value||TEAM_ICONS[0];
+  if(!name){notify('Team name is required');return}
+  if(editId&&editId!=='null'){
+    const t=getTeam(editId);
+    Object.assign(t,{name,manager:mgr,color:clr,icon:ico});
+    closeModal();notify('Team updated');
+    if(supabaseClient) await syncTeamToSupabase(t);
+  }else{
+    const id='T'+String(_tid++).padStart(3,'0');
+    const team={id,name,manager:mgr,color:clr,icon:ico};
+    DB.teams.push(team);
+    closeModal();notify(`Team "${name}" added`);
+    if(supabaseClient) await syncTeamToSupabase(team);
+  }
+}
+
+// ADD/EDIT EMPLOYEE MODAL
+function mEmp(editing){
+  const emp=editing?getEmp(S.modal.eid):{};
+  return `<div class="ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal modal-xl">
+    <div class="mh"><div class="modal-ttl">${editing?'Edit Employee':'Add New Employee'}</div>
+      <div class="mx" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="mb">
+      <div class="info"><i class="fa-solid fa-shield-halved"></i>
+        Each employee gets a <b>unique Login ID and password</b>. They can only view their own attendance and payslip — no access to other employees' data.
+      </div>
+      <div class="sec-hdr">Personal Information</div>
+      <div class="fr2">
+        <div class="fg" style="margin:0"><label class="fl">Full Name<span class="req">*</span></label>
+          <input type="text" id="e-nm" placeholder="e.g. Priya Sharma" value="${emp?.name||''}">
+        </div>
+        <div class="fg" style="margin:0"><label class="fl">Employee Code<span class="req">*</span></label>
+          <input type="text" id="e-cd" placeholder="e.g. EMP001" value="${emp?.empCode||'EMP'+String(_eid).padStart(3,'0')}">
+        </div>
+      </div>
+      <div class="fr2">
+        <div class="fg" style="margin:0"><label class="fl">Designation<span class="req">*</span></label>
+          <input type="text" id="e-dg" placeholder="e.g. Software Engineer" value="${emp?.designation||''}">
+        </div>
+        <div class="fg" style="margin:0"><label class="fl">Date of Joining<span class="req">*</span></label>
+          <input type="date" id="e-jd" value="${emp?.joinDate||''}">
+        </div>
+      </div>
+      <div class="fr3">
+        <div class="fg" style="margin:0"><label class="fl">Team</label>
+          <select id="e-tm">
+            <option value="">— No Team —</option>
+            ${DB.teams.map(t=>`<option value="${t.id}" ${emp?.teamId===t.id?'selected':''}>${t.icon} ${t.name}</option>`).join('')}
+          </select>
+        </div>
+        <div class="fg" style="margin:0"><label class="fl">Gross Salary (₹/month)<span class="req">*</span></label>
+          <input type="number" id="e-gs" placeholder="e.g. 35000" value="${emp?.grossSalary||''}" min="1">
+        </div>
+        <div class="fg" style="margin:0"><label class="fl">UAN (optional)</label>
+          <input type="text" id="e-uan" placeholder="e.g. 101234567890" value="${emp?.uan||''}">
+        </div>
+      </div>
+      <div class="div"></div>
+      <div class="sec-hdr">Portal Access Credentials</div>
+      <div class="fr2">
+        <div class="fg" style="margin:0"><label class="fl">Login ID<span class="req">*</span></label>
+          <input type="text" id="e-li" placeholder="e.g. EMP001 or priya.s" value="${emp?.loginId||''}">
+        </div>
+        <div class="fg" style="margin:0"><label class="fl">Password${editing?'':''}<span class="req">*</span></label>
+          <input type="text" id="e-pw" placeholder="${editing?'Leave blank = keep current':'Set a password'}" autocomplete="new-password">
+        </div>
+      </div>
+      <div class="div"></div>
+      <div class="sec-hdr">PF & Deductions</div>
+      <label style="display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--bg3);border-radius:var(--r);border:1.5px solid var(--border);cursor:pointer">
+        <input type="checkbox" id="e-pf" ${emp?.pfOpted?'checked':''} style="margin-top:2px">
+        <div>
+          <div style="font-weight:700;font-size:13px">Opted for Employee Provident Fund (EPF)</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;line-height:1.6">Employee: ₹900/month · Employer: ₹900/month · Total PF: ₹1,800/month<br>Professional Tax: ₹200/month · Only the employee PF and PT are deducted from net pay; employer PF is paid separately.</div>
+        </div>
+      </label>
+    </div>
+    <div class="mf">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="saveEmp(${editing?`'${S.modal.eid}'`:'null'})">${editing?'Save Changes':'Add Employee'}</button>
+    </div>
+  </div>
+</div>`;
+}
+window.saveEmp=async function(editId){
+  const v=id=>document.getElementById(id)?.value||'';
+  const name=v('e-nm').trim(), code=v('e-cd').trim(), desig=v('e-dg').trim();
+  const joinDate=v('e-jd'), teamId=v('e-tm')||null;
+  const grossSalary=parseFloat(v('e-gs'))||0;
+  const uan=v('e-uan').trim();
+  const loginId=v('e-li').trim(), password=v('e-pw').trim();
+  const pfOpted=document.getElementById('e-pf')?.checked||false;
+  if(!name||!code||!desig||!joinDate||!grossSalary||!loginId){notify('Please fill all required fields');return}
+  if(grossSalary<=0){notify('Enter a valid salary');return}
+  const isEdit=editId&&editId!=='null';
+  if(!isEdit&&!password){notify('Password is required for new employees');return}
+
+  if(isEdit){
+    const emp=getEmp(editId);
+    if(!emp){notify('Employee not found');return}
+    const oldLid=emp.loginId;
+    const loginTaken=DB.credentials[loginId] && DB.credentials[loginId].empId!==editId;
+    if(loginTaken){notify('Login ID already taken. Use a different one.');return}
+    if(oldLid&&oldLid!==loginId) delete DB.credentials[oldLid];
+    Object.assign(emp,{
+      name,empCode:code,designation:desig,joinDate,teamId,grossSalary,uan,pfOpted,loginId,
+      pfEmployeeDeduction: emp.pfEmployeeDeduction || 900,
+      pfEmployerContribution: emp.pfEmployerContribution || 900,
+      professionalTax: emp.professionalTax || 200,
+    });
+    DB.credentials[loginId]={empId:editId,password:password||DB.credentials[oldLid]?.password||''};
+    if(supabaseClient) await syncEmployeeToSupabase(emp,password);
+    closeModal();notify(name+' updated');
+    return;
+  }
+
+  if(DB.credentials[loginId]){notify('Login ID already taken. Use a different one.');return}
+  const id='E'+String(_eid++).padStart(3,'0');
+  const employee={
+    id,name,empCode:code,designation:desig,joinDate,teamId,grossSalary,uan,pfOpted,loginId,
+    pfEmployeeDeduction: 900,
+    pfEmployerContribution: 900,
+    professionalTax: 200,
+  };
+  DB.employees.push(employee);
+  DB.credentials[loginId]={empId:id,password};
+  if(supabaseClient) await syncEmployeeToSupabase(employee,password);
+  closeModal();notify(name+' added! Login ID: '+loginId);
+}
+
+// PAYSLIP MODAL
+function mPayslip(){
+  const {empId,m,y}=S.modal;
+  const emp=getEmp(empId);
+  return `<div class="ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal modal-xl">
+    <div class="mh">
+      <div class="modal-ttl">${emp?.name} — ${MONTHS[m]} ${y}</div>
+      <div class="row" style="gap:8px">
+        <button class="btn btn-p btn-sm" onclick="downloadPayslip('${empId}',${m},${y})"><i class="fa-solid fa-download"></i>Download</button>
+        <div class="mx" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+      </div>
+    </div>
+    <div class="mb">${buildPayslip(empId,m,y)}</div>
+  </div>
+</div>`;
+}
+
+// ADD HOLIDAY MODAL
+function mHoliday(){
+  return `<div class="ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal modal-sm">
+    <div class="mh"><div class="modal-ttl">Add Public Holiday</div>
+      <div class="mx" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="mb">
+      <div class="fg"><label class="fl">Date<span class="req">*</span></label>
+        <input type="date" id="ph-d">
+      </div>
+      <div class="fg"><label class="fl">Holiday Name<span class="req">*</span></label>
+        <input type="text" id="ph-n" placeholder="e.g. Diwali, Independence Day">
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="saveHoliday()"><i class="fa-solid fa-check"></i>Add Holiday</button>
+    </div>
+  </div>
+</div>`;
+}
+window.saveHoliday=async function(){
+  const d=document.getElementById('ph-d')?.value;
+  const n=(document.getElementById('ph-n')?.value||'').trim();
+  if(!d||!n){notify('Please fill all fields');return}
+  DB.publicHolidays[d]={name:n};
+  if(supabaseClient) await syncHolidayToSupabase(d,n);
+  closeModal();notify(n+' added as public holiday');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// REPORTS PAGE
+// ════════════════════════════════════════════════════════════════════════
+function pgReports(){
+  const m=S.rptM??CM, y=S.rptY??CY;
+  if(!DB.employees.length) return `<div class="empty"><i class="fa-solid fa-chart-bar"></i><p>Add employees to generate reports</p></div>`;
+
+  // Monthly summary across all employees
+  let totalPresent=0,totalLL=0,totalHD=0,totalA=0,totalJ=0,totalPH=0;
+  const empRows=DB.employees.map(emp=>{
+    const sm=attSummary(emp.id,y,m);
+    const c=calcPay(emp.id,y,m);
+    totalPresent+=sm.P; totalLL+=sm.LL+sm.LLHD; totalHD+=sm.HD+sm.LLHD; totalA+=sm.A; totalJ+=sm.J; totalPH+=sm.PH;
+    return {emp,sm,c};
+  });
+  const totalGrossPayable=empRows.reduce((a,r)=>a+(r.c?.net||0),0);
+  const totalPFDeductions=DB.employees.filter(e=>e.pfOpted).length*1800;
+
+  return `
+  <div class="jb" style="margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div style="font-size:13px;color:var(--text3)">Monthly attendance & payroll report</div>
+    <div class="row" style="gap:8px">
+      <select onchange="set({rptM:parseInt(this.value)})" style="width:130px">
+        ${MONTHS.map((mn,i)=>`<option value="${i}" ${i===m?'selected':''}>${mn}</option>`).join('')}
+      </select>
+      <select onchange="set({rptY:parseInt(this.value)})" style="width:90px">
+        ${[2023,2024,2025,2026].map(yr=>`<option value="${yr}" ${yr===y?'selected':''}>${yr}</option>`).join('')}
+      </select>
+      <button class="btn btn-p btn-sm" onclick="exportReport(${m},${y})"><i class="fa-solid fa-file-export"></i>Export HTML</button>
+    </div>
+  </div>
+
+  <div class="metrics" style="grid-template-columns:repeat(6,1fr)">
+    <div class="mc"><div class="bar" style="background:var(--green)"></div>
+      <div class="mc-lbl">Total Present Days</div><div class="mc-val" style="color:var(--green);font-size:22px">${totalPresent}</div><div class="mc-sub">${MONTHS[m]}</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--amber)"></div>
+      <div class="mc-lbl">Late Logins</div><div class="mc-val" style="color:var(--amber);font-size:22px">${totalLL}</div><div class="mc-sub">Company-wide</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--red)"></div>
+      <div class="mc-lbl">Total Absences</div><div class="mc-val" style="color:var(--red);font-size:22px">${totalA}</div><div class="mc-sub">Company-wide</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--blue)"></div>
+      <div class="mc-lbl">Half Days</div><div class="mc-val" style="color:var(--blue);font-size:22px">${totalHD}</div><div class="mc-sub">Company-wide</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--pink)"></div>
+      <div class="mc-lbl">Jelly Leaves</div><div class="mc-val" style="color:var(--pink);font-size:22px">${totalJ}</div><div class="mc-sub">Company-wide</div>
+    </div>
+    <div class="mc"><div class="bar" style="background:var(--blue)"></div>
+      <div class="mc-lbl">Net Payable</div><div class="mc-val" style="font-size:18px;color:var(--blue)">${fmtC(totalGrossPayable)}</div><div class="mc-sub">Total net salary</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;padding:0;overflow:hidden">
+    <div style="padding:13px 16px;border-bottom:1.5px solid var(--border)">
+      <div style="font-size:13px;font-weight:700">Employee-wise Report — ${MONTHS[m]} ${y}</div>
+    </div>
+    <div class="sx">
+      <table>
+        <thead><tr>
+          <th>Employee</th><th>Team</th><th>P</th><th>LL</th><th>HD</th><th>A</th><th>PH</th><th>J</th><th>Earn. Days</th><th>Gross Earned</th><th>Deductions</th><th>Net Pay</th><th>Payslip</th>
+        </tr></thead>
+        <tbody>
+        ${empRows.map(({emp,sm,c})=>{
+          const t=getTeam(emp.teamId);
+          return `<tr>
+            <td><div class="row" style="gap:8px">
+              <div class="av" style="width:26px;height:26px;font-size:10px;background:${t?t.color+'20':'#f5f5f5'};color:${t?t.color:'#888'}">${ini(emp.name)}</div>
+              <div><div style="font-weight:600;font-size:12.5px">${emp.name}</div><div class="mon" style="font-size:10px;color:var(--text3)">${emp.empCode}</div></div>
+            </div></td>
+            <td style="font-size:12px">${t?t.icon+' '+t.name:'—'}</td>
+            <td style="color:var(--green);font-weight:700;text-align:center">${sm.P}</td>
+            <td style="color:var(--amber);text-align:center">${sm.LL+sm.LLHD}</td>
+            <td style="color:var(--blue);text-align:center">${sm.HD+sm.LLHD}</td>
+            <td style="color:var(--red);text-align:center">${sm.A}</td>
+            <td style="color:var(--purple);text-align:center">${sm.PH}</td>
+            <td style="color:var(--pink);text-align:center">${sm.J}</td>
+            <td style="color:var(--orange);font-weight:600;text-align:center">${c?c.earningDays.toFixed(1):'—'}</td>
+            <td class="mon" style="font-size:12px">${c?fmtC(c.earned):'—'}</td>
+            <td class="mon" style="font-size:12px;color:var(--red)">${c&&c.totalDed?'−'+fmtC(c.totalDed):'—'}</td>
+            <td class="mon" style="font-size:13px;font-weight:800;color:var(--green)">${c?fmtC(c.net):'—'}</td>
+            <td><button class="btn btn-p btn-xs" onclick="openPayslipModal('${emp.id}',${m},${y})"><i class="fa-solid fa-eye"></i></button></td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-users"></i>PF Summary</div>
+      <div class="card-flat" style="margin-bottom:10px">
+        <div class="jb"><span style="font-size:13px">Employees with PF</span><strong>${DB.employees.filter(e=>e.pfOpted).length}</strong></div>
+      </div>
+      <div class="card-flat" style="margin-bottom:10px">
+        <div class="jb"><span style="font-size:13px">Employees without PF</span><strong>${DB.employees.filter(e=>!e.pfOpted).length}</strong></div>
+      </div>
+      <div class="card-flat" style="background:var(--green-bg);border-color:var(--green-border)">
+        <div class="jb"><span style="font-size:13px;font-weight:600;color:var(--green)">Total PF deducted from salary</span><strong class="mon" style="color:var(--green)">${fmtC(totalPFDeductions)}</strong></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="st"><i class="fa-solid fa-triangle-exclamation"></i>Attendance Alerts</div>
+      ${empRows.filter(r=>r.sm.A>=3||r.sm.LL+r.sm.LLHD>=5).length===0
+        ?`<div class="empty" style="padding:20px 0"><p>No alerts this month 🎉</p></div>`
+        :empRows.filter(r=>r.sm.A>=3||r.sm.LL+r.sm.LLHD>=5).map(({emp,sm})=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:${sm.A>=3?'var(--red-bg)':'var(--amber-bg)'};border:1px solid ${sm.A>=3?'var(--red-border)':'var(--amber-border)'};border-radius:var(--r);margin-bottom:7px">
+          <div class="av" style="width:30px;height:30px;font-size:11px;background:${sm.A>=3?'#fca5a5':'#fde68a'};color:${sm.A>=3?'var(--red)':'var(--amber)'}">${ini(emp.name)}</div>
+          <div>
+            <div style="font-size:13px;font-weight:600">${emp.name}</div>
+            <div style="font-size:11px;color:var(--text3)">
+              ${sm.A>=3?`${sm.A} absences`:''}${sm.A>=3&&sm.LL+sm.LLHD>=5?' · ':''}${sm.LL+sm.LLHD>=5?`${sm.LL+sm.LLHD} late logins`:''}
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+window.exportReport=function(m,y){
+  const content=document.querySelector('.content')?.innerHTML||'';
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Report - ${MONTHS[m]} ${y}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Plus Jakarta Sans',sans-serif;background:#f5f4f0;padding:24px}
+  .card{background:#fff;border:1.5px solid #e0dbd2;border-radius:12px;padding:18px 20px;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse}.tw{border:1.5px solid #e0dbd2;border-radius:12px;overflow:hidden}
+  th{background:#f0ede8;padding:9px 12px;font-size:10px;font-weight:700;text-transform:uppercase;color:#9a9080;text-align:left;border-bottom:1.5px solid #e0dbd2}
+  td{padding:10px 12px;font-size:12.5px;border-bottom:1px solid #e0dbd2}tr:last-child td{border-bottom:none}
+  .metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+  .mc{background:#fff;border:1.5px solid #e0dbd2;border-radius:12px;padding:14px 16px}
+  .row{display:flex;align-items:center;gap:8px}.jb{display:flex;justify-content:space-between;align-items:center}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card-flat{background:#f0ede8;border:1.5px solid #e0dbd2;border-radius:10px;padding:12px 14px;margin-bottom:8px}
+  .mon{font-family:'DM Mono',monospace}.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .sx{overflow-x:auto}.st{font-size:14px;font-weight:700;margin-bottom:12px}
+  @media print{body{background:#fff;padding:0}}</style>
+  </head><body>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:16px;border-bottom:2px solid #e0dbd2">
+    <div style="width:42px;height:42px;background:linear-gradient(135deg,#e8660a,#bf5007);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff">C</div>
+    <div><div style="font-size:20px;font-weight:900;color:#e8660a">CREDVENT</div><div style="font-size:11px;color:#9a9080">Monthly Report — ${MONTHS[m]} ${y}</div></div>
+    <div style="margin-left:auto;font-size:11px;color:#9a9080">Generated: ${new Date().toLocaleDateString('en-IN')}</div>
+  </div>
+  ${content}
+  </body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`CREDVENT_Report_${MONTHS[m]}_${y}.html`;
+  a.click();
+  notify('Report exported!');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// SETTINGS PAGE
+// ════════════════════════════════════════════════════════════════════════
+function pgSettings(){
+  return `
+  <div class="g2" style="align-items:start">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="st"><i class="fa-solid fa-lock"></i>Change Admin Password</div>
+        <div class="fg"><label class="fl">Current Password</label>
+          <input type="password" id="s-cur" placeholder="Enter current password">
+        </div>
+        <div class="fg"><label class="fl">Admin Username</label>
+          <input type="text" id="s-user" value="${DB.admin.id || 'admin'}" placeholder="Enter admin username">
+        </div>
+        <div class="fg"><label class="fl">New Password</label>
+          <input type="password" id="s-new" placeholder="Enter new password">
+        </div>
+        <div class="fg" style="margin-bottom:14px"><label class="fl">Confirm New Password</label>
+          <input type="password" id="s-cnf" placeholder="Confirm new password">
+        </div>
+        <button class="btn btn-p" onclick="changeAdminPw()"><i class="fa-solid fa-key"></i>Update Credentials</button>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="st"><i class="fa-solid fa-table"></i>Admin Credential Table</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+            <thead>
+              <tr style="background:var(--bg3);color:var(--text2)">
+                <th style="text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)">User Name</th>
+                <th style="text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)">Password</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:8px 10px;border-bottom:1px solid var(--border)">${DB.admin.id || 'admin'}</td>
+                <td style="padding:8px 10px;border-bottom:1px solid var(--border)">${DB.admin.password || 'admin123'}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="st"><i class="fa-solid fa-info-circle"></i>Payroll Policy</div>
+        <div style="display:grid;gap:8px">
+          ${[
+            {l:'Salary calculation basis',v:'Gross ÷ 30 days (always)'},
+            {l:'Late login deduction (1–3 days)',v:'₹150 per day'},
+            {l:'Late login deduction (4th day+)',v:'₹200 per day'},
+            {l:'Half day pay',v:'0.5 day salary'},
+            {l:'Jelly leave pay',v:'Full day salary'},
+            {l:'Public holiday pay',v:'Full day salary'},
+            {l:'Sunday work pay',v:'Full day salary'},
+            {l:'PF – Employee contribution',v:'₹900/month (if opted)'},
+            {l:'PF – Employer contribution',v:'₹900/month (if opted)'},
+            {l:'Professional Tax',v:'₹200/month (PF opted only)'},
+            {l:'Absent day',v:'No pay (0 days)'},
+            {l:'Sunday holiday',v:'No pay (0 days)'},
+          ].map(r=>`<div class="jb" style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)">
+            <span style="font-size:12.5px;color:var(--text2)">${r.l}</span>
+            <span style="font-size:12.5px;font-weight:700;color:var(--orange)">${r.v}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="st"><i class="fa-solid fa-user-gear"></i>Reset Employee Password</div>
+        <div class="fg"><label class="fl">Select Employee</label>
+          <select id="s-emp">
+            <option value="">— Choose employee —</option>
+            ${DB.employees.map(e=>`<option value="${e.id}">${e.name} (${e.loginId})</option>`).join('')}
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:14px"><label class="fl">New Password</label>
+          <input type="text" id="s-epw" placeholder="Enter new password for employee">
+        </div>
+        <button class="btn btn-p" onclick="resetEmpPw()"><i class="fa-solid fa-rotate"></i>Reset Password</button>
+      </div>
+
+      <div class="card">
+        <div class="st"><i class="fa-solid fa-database"></i>Data Summary</div>
+        ${[
+          {l:'Total Teams',v:DB.teams.length,c:'var(--orange)'},
+          {l:'Total Employees',v:DB.employees.length,c:'var(--blue)'},
+          {l:'Employees with PF',v:DB.employees.filter(e=>e.pfOpted).length,c:'var(--green)'},
+          {l:'Public Holidays configured',v:Object.keys(DB.publicHolidays).length,c:'var(--purple)'},
+          {l:'Attendance records',v:Object.values(DB.attendance).reduce((a,r)=>a+Object.keys(r).length,0),c:'var(--teal)'},
+        ].map(r=>`<div class="jb" style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border);margin-bottom:7px">
+          <span style="font-size:12.5px;color:var(--text2)">${r.l}</span>
+          <span style="font-size:16px;font-weight:800;color:${r.c};font-family:var(--mono)">${r.v}</span>
+        </div>`).join('')}
+        <div class="div"></div>
+        <button class="btn btn-d" onclick="clearAllData()" style="width:100%;justify-content:center">
+          <i class="fa-solid fa-trash"></i>Clear All Data (Reset)
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+window.changeAdminPw=function(){
+  const cur=document.getElementById('s-cur')?.value;
+  const user=(document.getElementById('s-user')?.value||'').trim();
+  const nw=document.getElementById('s-new')?.value;
+  const cnf=document.getElementById('s-cnf')?.value;
+  if(!cur||!nw||!cnf){notify('Please fill all fields');return}
+  if(cur!==DB.admin.password){notify('Current password is incorrect');return}
+  if(nw!==cnf){notify('New passwords do not match');return}
+  if(nw.length<4){notify('Password must be at least 4 characters');return}
+  if(!user){notify('Admin username cannot be empty');return}
+  DB.admin.id=user;
+  DB.admin.password=nw;
+  if(supabaseClient) syncAdminCredentialsToSupabase(user, nw);
+  document.getElementById('s-cur').value='';
+  document.getElementById('s-user').value=user;
+  document.getElementById('s-new').value='';
+  document.getElementById('s-cnf').value='';
+  notify('Admin credentials updated successfully!');
+}
+
+window.resetEmpPw=async function(){
+  const eid=document.getElementById('s-emp')?.value;
+  const pw=document.getElementById('s-epw')?.value?.trim();
+  if(!eid){notify('Please select an employee');return}
+  if(!pw||pw.length<3){notify('Password must be at least 3 characters');return}
+  const emp=getEmp(eid);
+  if(!emp?.loginId){notify('Employee has no login ID');return}
+  if(!DB.credentials[emp.loginId]){notify('No password record exists for this employee');return}
+  DB.credentials[emp.loginId].password=pw;
+  if(supabaseClient) await resetEmployeePasswordToSupabase(eid,pw);
+  notify(`Password reset for ${emp.name}`);
+}
+
+window.clearAllData=async function(){
+  if(!confirm('This will delete ALL teams, employees, attendance, and holiday data. This cannot be undone. Are you sure?'))return;
+  if(!confirm('FINAL WARNING: All data will be permanently deleted. Confirm?'))return;
+  DB.teams=[];DB.employees=[];DB.attendance={};DB.credentials={};DB.publicHolidays={};
+  _eid=1;_tid=1;
+  if(supabaseClient) await clearSupabaseData();
+  set({page:'dashboard'});
+  notify('All data cleared');
+}
+
+// MODAL OPENERS
+window.openMarkModal=function(empId,dateStr){
+  const [y,m,d]=dateStr.split('-').map(Number);
+  if(!canEditDate(y,m-1,d)){notify('You can only update attendance up to today.');return;}
+  set({modal:{type:'mark',empId,dateStr}});
+}
+window.openBulkModal      =function(){set({modal:{type:'bulk',date:todayKey(),tid:'all'}})}
+window.openAddTeamModal   =function(){set({modal:{type:'addTeam'}})}
+window.openEditTeamModal  =function(id){set({modal:{type:'editTeam',tid:id}})}
+window.openAddEmpModal    =function(){set({modal:{type:'addEmp'}})}
+window.openEditEmpModal   =function(id){set({modal:{type:'editEmp',eid:id}})}
+window.openPayslipModal   =function(empId,m,y){set({modal:{type:'payslip',empId,m,y}})}
+window.openAddHolidayModal=function(){set({modal:{type:'addHoliday'}})}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  S.modal = null;
+  if(!S.page) S.page = 'dashboard';
+  render();
+  if(USE_SUPABASE) initSupabase().then(()=>render());
+});
+</script>
+</body>
+</html>
